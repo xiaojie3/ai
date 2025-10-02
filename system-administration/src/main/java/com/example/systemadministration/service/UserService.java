@@ -1,6 +1,6 @@
 package com.example.systemadministration.service;
 
-import com.example.edu.common.dto.UserDto;
+import com.example.systemadministration.dto.UserDto;
 
 import java.util.Optional;
 

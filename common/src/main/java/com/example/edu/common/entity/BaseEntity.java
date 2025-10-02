@@ -8,7 +8,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data // 使用 Lombok 简化 getter/setter
 @MappedSuperclass // 关键注解：表示这是一个映射的超类，其属性将被继承
@@ -17,19 +17,19 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @CreatedBy // 自动填充创建者
     @Column(updatable = false) // 创建后不允许修改
-    private String creator;
+    protected Long creator;
 
     @CreatedDate // 自动填充创建时间
     @Column(updatable = false)
-    private LocalDateTime createDate;
+    protected Date createDate;
 
     @LastModifiedBy // 自动填充修改者
-    private String modifier;
+    protected Long modifier;
 
     @LastModifiedDate // 自动填充修改时间
-    private LocalDateTime modifyDate;
+    protected Date modifyDate;
 }

@@ -37,11 +37,16 @@
 
 	<dependencies>
 		<!-- MapStruct 核心依赖 -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>-->
 
 		<!-- Lombok 依赖 (可选，但强烈推荐) -->
 		<dependency>

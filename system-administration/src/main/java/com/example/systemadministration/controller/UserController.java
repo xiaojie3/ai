@@ -1,8 +1,8 @@
 package com.example.systemadministration.controller;
 
 
-import com.example.edu.common.dto.UserDto;
-import com.example.systemadministration.mapper.UserMapper;
+import com.example.edu.common.MyUtils;
+import com.example.systemadministration.dto.UserDto;
 import com.example.systemadministration.service.UserService;
 import com.example.systemadministration.vo.UserVo;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<Long> create(@RequestBody UserVo vo) {
-        UserDto dto = userService.create(UserMapper.INSTANCE.toDto(vo)).orElseThrow();
+        UserDto dto = userService.create(MyUtils.copyProperties(vo, UserDto.class)).orElseThrow();
         return ResponseEntity.ok(dto.getId());
     }
 
@@ -31,6 +31,6 @@ public class UserController {
     @GetMapping("/account/{account}")
     public ResponseEntity<UserVo> findByAccount(@PathVariable String account) {
         UserDto dto = userService.findByAccount(account).orElseThrow();
-        return ResponseEntity.ok(UserMapper.INSTANCE.toVo(dto));
+        return ResponseEntity.ok(MyUtils.copyProperties(dto, UserVo.class));
     }
 }

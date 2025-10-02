@@ -1,11 +1,12 @@
-package com.example.edu.common.dto;
+package com.example.systemadministration.dto;
 
+import com.example.edu.common.dto.BaseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true) // Lombok 注解，生成 equals 和 hashCode 时包含父类字段
-public class PermissionDto extends BaseDto{
+public class PermissionDto extends BaseDto {
 
     private String name;
 }

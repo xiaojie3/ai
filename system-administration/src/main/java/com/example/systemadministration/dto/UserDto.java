@@ -1,5 +1,6 @@
-package com.example.edu.common.dto;
+package com.example.systemadministration.dto;
 
+import com.example.edu.common.dto.BaseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,7 +10,7 @@ import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true) // Lombok 注解，生成 equals 和 hashCode 时包含父类字段
-public class UserDto extends BaseDto{
+public class UserDto extends BaseDto {
 
     private String username; // 登录用户名（唯一）
 

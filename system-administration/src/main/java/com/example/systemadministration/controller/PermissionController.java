@@ -1,7 +1,7 @@
 package com.example.systemadministration.controller;
 
-import com.example.edu.common.dto.PermissionDto;
-import com.example.systemadministration.mapper.PermissionMapper;
+import com.example.edu.common.MyUtils;
+import com.example.systemadministration.dto.PermissionDto;
 import com.example.systemadministration.service.PermissionService;
 import com.example.systemadministration.vo.PermissionVo;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/permission")
 @RequiredArgsConstructor
 public class PermissionController {
+
     private final PermissionService service;
-    private final PermissionMapper mapper;
 
     @PostMapping()
     public ResponseEntity<Long> create(@RequestBody PermissionVo vo) {
-        PermissionDto dto = service.create(mapper.toDto(vo)).orElseThrow();
+        PermissionDto dto = new PermissionDto();
+        MyUtils.copyProperties(vo,dto);
+        dto = service.create(dto).orElseThrow();
         return ResponseEntity.ok(dto.getId());
     }
 
@@ -29,7 +31,7 @@ public class PermissionController {
 
     @GetMapping("/name/{name}")
     public ResponseEntity<PermissionVo> findByAccount(@PathVariable String name) {
-        PermissionDto dto = service.findByName(name).orElseThrow();
-        return ResponseEntity.ok(mapper.toVo(dto));
+        PermissionDto dto = service.findByName(name).orElseThrow(() -> new NullPointerException("权限不存在: " + name));
+        return ResponseEntity.ok(MyUtils.copyProperties(dto,PermissionVo.class));
     }
 }
