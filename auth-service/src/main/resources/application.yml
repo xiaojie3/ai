@@ -1,0 +1,27 @@
+server:
+  port: 8081 # 明确指定认证服务端口为 8081
+spring:
+  application:
+    name: auth-service
+  datasource:
+    # Oracle URL 格式: jdbc:oracle:thin:@<host>:<port>:<sid>  或  jdbc:oracle:thin:@//<host>:<port>/<service_name>
+    # <service_name> 是推荐的方式，例如 'ORCLPDB1' 是常见的 PDB 服务名
+    url: jdbc:oracle:thin:@//192.168.3.165:1521/orcl
+
+    username: njwv2cs      # 你的 Oracle 用户名 (例如: AI_AGENT_APP)
+    password: njwv2cs      # 你的 Oracle 密码
+
+    # Oracle JDBC 驱动类
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    open-in-view: true
+
+
+# JWT 配置（需与 api-gateway 的配置完全一致！）
+application:
+  security:
+    jwt:
+      secret-key: Y2F0Y2hlciUyMHdvcmtpbmd8c3ByaW5nJTIwY2xvdWQlMjBpcyUyMHBhcGVyIQ==  # Base64 编码的密钥（自己生成）
+      expiration: 3600000  # 访问令牌过期时间（1小时，单位：毫秒）
+      refresh-token:
+        expiration: 86400000  # 刷新令牌过期时间（24小时，单位：毫秒）
