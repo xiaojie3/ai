@@ -61,7 +61,7 @@
         <!-- ... 其他网关依赖 ... -->
         <dependency>
             <groupId>com.example.edu</groupId>
-            <artifactId>common-model</artifactId>
+            <artifactId>common</artifactId>
             <version>${project.version}</version> <!-- 版本与父项目一致 -->
         </dependency>
     </dependencies>

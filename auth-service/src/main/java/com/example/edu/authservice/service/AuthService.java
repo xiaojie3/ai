@@ -2,13 +2,13 @@ package com.example.edu.authservice.service;
 
 import com.example.edu.authservice.dto.LoginRequest;
 import com.example.edu.authservice.dto.LoginResponse;
-import com.example.edu.authservice.entity.User;
 import com.example.edu.authservice.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userService;
     private final JwtService jwtService;
 
     public LoginResponse login(LoginRequest loginRequest) {
@@ -24,7 +24,7 @@ public class AuthService {
         // UsernamePasswordAuthenticationToken 是一个包含用户名和密码的认证请求对象
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        loginRequest.getAccount(),
                         loginRequest.getPassword()
                 )
         );
@@ -34,7 +34,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 3. 认证成功后，加载完整的用户信息
-        User user = (User) userDetailsService.loadUserByUsername(loginRequest.getUsername());
+        UserDetails user = userService.loadUserByAccount(loginRequest.getAccount());
 
         // 4. 使用 JwtService 生成访问令牌和刷新令牌
         String accessToken = jwtService.generateToken(user);

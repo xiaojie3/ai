@@ -1,4 +1,7 @@
 package com.example.edu.authservice.service;
 
-public class UserDetailsService {
+import org.springframework.security.core.userdetails.UserDetails;
+
+public interface UserDetailsService {
+    UserDetails loadUserByAccount(String account);
 }

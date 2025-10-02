@@ -1,7 +1,7 @@
 package com.example.edu.apigateway.filter;
 
 import com.example.edu.apigateway.util.JwtUtil;
-import com.example.edu.common.model.UserContext;
+import com.example.edu.common.dto.UserContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

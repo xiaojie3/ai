@@ -34,12 +34,6 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId> <!-- 推荐使用 ojdbc8 或 ojdbc11，取决于你的 Oracle 数据库版本 -->
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- JWT 依赖 -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -61,14 +55,13 @@
 
         <dependency>
             <groupId>com.example.edu</groupId>
-            <artifactId>common-model</artifactId>
+            <artifactId>common</artifactId>
             <version>${project.version}</version> <!-- 版本与父项目一致 -->
         </dependency>
-        <!-- Lombok (简化代码) -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
     <build>
