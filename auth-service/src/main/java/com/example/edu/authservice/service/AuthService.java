@@ -34,7 +34,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 3. 认证成功后，加载完整的用户信息
-        UserDetails user = userService.loadUserByAccount(loginRequest.getAccount());
+        UserDetails user = userService.loadUserByUsername(loginRequest.getAccount());
 
         // 4. 使用 JwtService 生成访问令牌和刷新令牌
         String accessToken = jwtService.generateToken(user);

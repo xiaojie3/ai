@@ -8,10 +8,11 @@ import lombok.EqualsAndHashCode;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Table(name = "ai_users")
-@Data
-@EqualsAndHashCode(callSuper = true) // Lombok 注解，生成 equals 和 hashCode 时包含父类字段
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class UserEntity extends BaseEntity {
 
     @Column(unique = true, nullable = false)

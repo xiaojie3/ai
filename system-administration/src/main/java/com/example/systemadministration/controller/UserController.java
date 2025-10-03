@@ -30,7 +30,8 @@ public class UserController {
 
     @GetMapping("/account/{account}")
     public ResponseEntity<UserVo> findByAccount(@PathVariable String account) {
-        UserDto dto = userService.findByAccount(account).orElseThrow();
+        UserDto dto = userService.findByAccount(account)
+                .orElseThrow(() -> new RuntimeException("用户未找到: " + account));
         return ResponseEntity.ok(MyUtils.copyProperties(dto, UserVo.class));
     }
 }

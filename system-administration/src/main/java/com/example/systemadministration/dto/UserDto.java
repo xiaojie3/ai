@@ -12,7 +12,9 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true) // Lombok 注解，生成 equals 和 hashCode 时包含父类字段
 public class UserDto extends BaseDto {
 
-    private String username; // 登录用户名（唯一）
+    private String account; // 账号（唯一）
+
+    private String name; // 姓名
 
     private String email;  // 邮箱（可选，用于找回密码）
 

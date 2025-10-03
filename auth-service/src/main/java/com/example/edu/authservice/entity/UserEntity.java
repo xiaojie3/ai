@@ -16,21 +16,21 @@ import java.util.Set;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
-    protected String account;  // 登录账号（唯一）
+    private String account;  // 登录账号（唯一）
 
     @Column(nullable = false)
-    protected String name;
+    private String name;
 
     @Column(nullable = false)
-    protected String password;  // 加密后的密码
+    private String password;  // 加密后的密码
 
     @Column(unique = true, nullable = false)
-    protected String email;  // 邮箱（可选，用于找回密码）
+    private String email;  // 邮箱（可选，用于找回密码）
 
-    protected boolean enabled = true;  // 账号是否启用（默认启用）
+    private boolean enabled = true;  // 账号是否启用（默认启用）
 
     // 多对多关联：一个用户可拥有多个角色
     @ManyToMany(fetch = FetchType.EAGER)  // EAGER：加载用户时立即加载角色（认证时需要）
@@ -39,5 +39,5 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    protected Set<RoleEntity> roles = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>();
 }

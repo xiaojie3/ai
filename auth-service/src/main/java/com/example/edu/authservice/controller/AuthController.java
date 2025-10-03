@@ -20,10 +20,6 @@ public class AuthController {
 
     @PostMapping("/login") // 登录接口
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        // 1. 调用 Service 层的 login 方法处理业务逻辑
-        LoginResponse loginResponse = authService.login(loginRequest);
-
-        // 2. 返回 200 OK 响应，并将 LoginResponse 作为响应体
-        return ResponseEntity.ok(loginResponse);
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 }

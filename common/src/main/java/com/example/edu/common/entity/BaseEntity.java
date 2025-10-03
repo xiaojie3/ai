@@ -2,6 +2,7 @@ package com.example.edu.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.Date;
 
 @Data // 使用 Lombok 简化 getter/setter
+@NoArgsConstructor
 @MappedSuperclass // 关键注解：表示这是一个映射的超类，其属性将被继承
 @EntityListeners(AuditingEntityListener.class) // 关键注解：启用 JPA 的审计功能
 public abstract class BaseEntity {
