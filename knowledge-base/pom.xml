@@ -8,17 +8,11 @@
         <version>0.0.1</version>
     </parent>
     <artifactId>knowledge-base</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>knowledge-base-service</name>
     <description>knowledge-base-service</description>
     <!-- 依赖部分 -->
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
-            <!-- 注意：这里不需要写版本号，因为会从父项目的 dependencyManagement 中继承 -->
-        </dependency>
-
         <!-- 添加其他你需要的依赖，如 spring-boot-starter-actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

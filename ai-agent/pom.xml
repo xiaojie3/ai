@@ -16,7 +16,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
-            <!-- 注意：这里不需要写版本号，因为会从父项目的 dependencyManagement 中继承 -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-gateway-server-webflux</artifactId>
+            <version>4.3.1</version>
         </dependency>
 
         <!-- 添加其他你需要的依赖，如 spring-boot-starter-actuator -->
