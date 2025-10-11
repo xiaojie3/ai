@@ -12,6 +12,11 @@
     <name>system-administration</name>
     <description>system-administration</description>
     <dependencies>
+        <!-- Spring Security (核心认证框架) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

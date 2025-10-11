@@ -12,6 +12,11 @@
     <description>auth-service</description>
     <!-- 依赖部分 -->
     <dependencies>
+        <!-- Spring Security (核心认证框架) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <!-- Spring Boot Web (非 WebFlux，auth-service 用传统 MVC 即可) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

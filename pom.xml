@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.0-M3</version>
+		<version>3.5.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example.edu</groupId>
@@ -47,12 +47,6 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>-->
-
-		<!-- Spring Security (核心认证框架) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
 		<!-- Lombok 依赖 (可选，但强烈推荐) -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>

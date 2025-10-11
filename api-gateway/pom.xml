@@ -13,8 +13,12 @@
 
     <!-- 依赖部分 -->
     <dependencies>
+        <!-- Spring Security (核心认证框架) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <!-- Spring Cloud Gateway 核心依赖（响应式） -->
-        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-gateway-server-webflux -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-gateway-server-webflux</artifactId>
