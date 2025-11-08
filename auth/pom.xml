@@ -8,10 +8,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common</artifactId>
-
+    <artifactId>auth</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.example.ai</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
     <description>
-        common通用模块
+        权限认证
     </description>
-
 </project>
