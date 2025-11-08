@@ -1,6 +1,5 @@
 package com.example.ai.auth.dto;
 
-import com.example.ai.common.model.entity.SysUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

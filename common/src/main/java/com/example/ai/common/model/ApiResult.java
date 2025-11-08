@@ -1,13 +1,17 @@
 package com.example.ai.common.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ApiResult<T> {
 
     private int code = 200;
     private T data;
     private String msg;
+
+    public ApiResult() {}
 
     public static <T> ApiResult<T> of(T data) {
         ApiResult<T> apiResult = new ApiResult<>();

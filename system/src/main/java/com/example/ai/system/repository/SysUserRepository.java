@@ -3,7 +3,7 @@ package com.example.ai.system.repository;
 import com.example.ai.common.model.PageResult;
 import com.example.ai.system.dto.SysUserDTO;
 import com.example.ai.system.dto.SysUserQueryDTO;
-import com.example.ai.common.model.entity.SysUser;
+import com.example.ai.system.entity.SysUser;
 
 import java.util.List;
 

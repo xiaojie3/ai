@@ -3,7 +3,6 @@ package com.example.ai.common.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +11,14 @@ import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
-    // JWT 密钥（建议配置在 application.yml 中，长度至少 256 位）
-    @Value("${jwt.secret:Quantum7Zebra32Falcon19Jade8Horizon47Vortex23Luna56Phoenix14Onyx78Tiger36Ruby29Eagle51Nebula84Fox17Dragon63Sapphire42Wolf91Iris37Hawk68Aurora25Bear74Emerald59Shark28Opal45Owl72Nova31Lion89Amethyst64Dolphin16Pearl53Raven87Orion49Panther35Topaz76Whale24Garnet61Sparrow93Aether58Leopard48Jasper82Falcon39Coral67Osprey21Vega73Stag52Vitrine94Hippo18Period75Raptor33Zodiac69}")
-    private static String secret;
 
     // 令牌过期时间（72000 秒 = 20 小时）
-    @Value("${jwt.expiration:72000000}")
-    public static long expiration;
+    public static long expiration = 72000000;
 
     // 生成 SecretKey（Spring Security 6 要求密钥必须是 SecretKey 类型）
     private static SecretKey getSecretKey() {
+        // JWT 密钥（建议配置在 application.yml 中，长度至少 256 位）
+        String secret = "Quantum7Zebra32Falcon19Jade8Horizon47Vortex23Luna56Phoenix14Onyx78Tiger36Ruby29Eagle51Nebula84Fox17Dragon63Sapphire42Wolf91Iris37Hawk68Aurora25Bear74Emerald59Shark28Opal45Owl72Nova31Lion89Amethyst64Dolphin16Pearl53Raven87Orion49Panther35Topaz76Whale24Garnet61Sparrow93Aether58Leopard48Jasper82Falcon39Coral67Osprey21Vega73Stag52Vitrine94Hippo18Period75Raptor33Zodiac69";
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 

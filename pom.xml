@@ -34,9 +34,15 @@
 		<knife4j.version>4.4.0</knife4j.version>
 		<commons-lang3.version>3.19.0</commons-lang3.version>
 		<jwt.version>0.13.0</jwt.version>
+		<fastjson.version>2.0.60</fastjson.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.alibaba.fastjson2</groupId>
+			<artifactId>fastjson2</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
 		<!-- JWT 依赖 -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

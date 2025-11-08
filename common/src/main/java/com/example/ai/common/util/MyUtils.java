@@ -33,7 +33,7 @@ public class MyUtils {
     /**
      * 复制源对象的属性到目标对象。
      *
-     * @param source 源对象
+     * @param source      源对象
      * @param targetClass 目标对象
      */
     public static <T> T copyObject(Object source, Class<T> targetClass) {
@@ -66,29 +66,33 @@ public class MyUtils {
         return target;
     }
 
-    public static void copyObject(Object source, Object target, Boolean copyNull) throws Exception {
-        // 3. 获取源对象的所有声明字段（包括 private）
-        List<Field> allSourceFields = getAllFields(source.getClass());
-        List<Field> allTargetFields = getAllFields(target.getClass());
+    public static void copyObject(Object source, Object target, Boolean copyNull) {
+        try {
+            // 3. 获取源对象的所有声明字段（包括 private）
+            List<Field> allSourceFields = getAllFields(source.getClass());
+            List<Field> allTargetFields = getAllFields(target.getClass());
 
-        // 4. 遍历源对象的字段，并复制到目标实例中
-        for (Field sourceField : allSourceFields) {
-            sourceField.setAccessible(true); // 允许访问私有字段
-            String fieldName = sourceField.getName();
-            Object fieldValue = sourceField.get(source);
-            Field targetField = findFieldByName(allTargetFields, fieldName);
-            if (targetField == null) {
-                // 如果目标对象（包括其所有父类）没有这个字段，则跳过
-                continue;
-            }
-            targetField.setAccessible(true);
-            // --- 核心复制逻辑（与之前相同） ---
-            if (!copyNull && sourceField.getType().equals(String.class)) {
-                if (fieldValue == null || StringUtils.isBlank((String) fieldValue)) {
+            // 4. 遍历源对象的字段，并复制到目标实例中
+            for (Field sourceField : allSourceFields) {
+                sourceField.setAccessible(true); // 允许访问私有字段
+                String fieldName = sourceField.getName();
+                Object fieldValue = sourceField.get(source);
+                Field targetField = findFieldByName(allTargetFields, fieldName);
+                if (targetField == null) {
+                    // 如果目标对象（包括其所有父类）没有这个字段，则跳过
                     continue;
                 }
+                targetField.setAccessible(true);
+                // --- 核心复制逻辑（与之前相同） ---
+                if (!copyNull && sourceField.getType().equals(String.class)) {
+                    if (fieldValue == null || StringUtils.isBlank((String) fieldValue)) {
+                        continue;
+                    }
+                }
+                targetField.set(target, fieldValue);
             }
-            targetField.set(target, fieldValue);
+        } catch (Exception e) {
+            e.fillInStackTrace();
         }
     }
 
@@ -126,7 +130,7 @@ public class MyUtils {
         return null;
     }
 
-    public static String getUUID(){
+    public static String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }

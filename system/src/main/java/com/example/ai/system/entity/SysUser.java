@@ -1,4 +1,4 @@
-package com.example.ai.common.model.entity;
+package com.example.ai.system.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

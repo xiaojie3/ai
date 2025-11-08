@@ -90,7 +90,7 @@ public class SysUserController {
      */
     @PutMapping("/notNull")
     @Operation(summary = "编辑非空参数")
-    public ResponseEntity<ApiResult<SysUserSaveDTO>> editByNotNull(SysUserSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<SysUserSaveDTO>> editByNotNull(@RequestBody SysUserSaveDTO saveDTO) {
         this.service.updateNotNll(saveDTO);
         return ResponseEntity.ok(ApiResult.of(saveDTO));
     }
