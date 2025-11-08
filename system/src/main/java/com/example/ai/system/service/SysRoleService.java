@@ -4,7 +4,6 @@ import com.example.ai.common.model.PageResult;
 import com.example.ai.system.dto.SysRoleDTO;
 import com.example.ai.system.dto.SysRoleQueryDTO;
 import com.example.ai.system.dto.SysRoleSaveDTO;
-import com.example.ai.system.entity.SysRole;
 
 import java.util.List;
 

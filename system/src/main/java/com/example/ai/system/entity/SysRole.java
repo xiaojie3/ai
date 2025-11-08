@@ -1,7 +1,5 @@
 package com.example.ai.system.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;

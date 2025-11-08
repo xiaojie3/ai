@@ -41,7 +41,6 @@ public class SysUserRepositoryImpl extends BaseJooqRepository implements SysUser
     @Override
     public SysUserDTO FindById(String id) {
         List<SysUserDTO> list = this.list(SysUserQueryDTO.builder().id(id).build());
-        id.substring(0,id.lastIndexOf(","));
         return list.isEmpty() ? null : list.getFirst();
     }
 

@@ -21,7 +21,7 @@ public enum OperatorEnum {
     NOT_BETWEEN("不介于");
 
     // getter方法
-    private String name;
+    private final String name;
 
     // 构造方法（枚举的构造方法必须是private，且只能在枚举内部使用）
     OperatorEnum(String name) {

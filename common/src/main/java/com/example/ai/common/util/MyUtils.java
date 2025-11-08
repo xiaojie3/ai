@@ -1,35 +1,14 @@
 package com.example.ai.common.util;
 
 import io.micrometer.common.util.StringUtils;
-import org.jooq.Table;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 public class MyUtils {
-
-    /**
-     * 扫描Tables类，提取所有静态表对象（表名 → 表对象）
-     */
-    private static Map<String, Table<?>> scanTables(Class<?> tables) {
-        Map<String, Table<?>> map = new HashMap<>();
-        try {
-            // 获取Tables类的所有静态字段
-            Field[] fields = tables.getDeclaredFields();
-            for (Field field : fields) {
-                // 只处理static且类型为Table的字段
-                if (Modifier.isStatic(field.getModifiers()) && Table.class.isAssignableFrom(field.getType())) {
-                    String tableName = field.getName(); // 表名（如"GEN_TABLE"、"SYS_DEPT"）
-                    Table<?> table = (Table<?>) field.get(null); // 获取静态字段的值（表对象）
-                    map.put(tableName, table);
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("扫描Tables类失败", e);
-        }
-        return Collections.unmodifiableMap(map);
-    }
 
     /**
      * 驼峰转下划线（如"userId"→"user_id"）
@@ -87,18 +66,6 @@ public class MyUtils {
         return target;
     }
 
-    public static void copyObject(Object source, Object target) {
-        if (source == null || target == null) {
-            return;
-        }
-        try {
-            // 创建targetClass的实例（需确保有可访问的无参构造方法）
-            copyObject(source, target, true);
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
     public static void copyObject(Object source, Object target, Boolean copyNull) throws Exception {
         // 3. 获取源对象的所有声明字段（包括 private）
         List<Field> allSourceFields = getAllFields(source.getClass());
@@ -122,23 +89,6 @@ public class MyUtils {
                 }
             }
             targetField.set(target, fieldValue);
-        }
-    }
-
-    /**
-     * 复制源对象的属性到目标对象，但忽略 null、空字符串和纯空白字符串。
-     *
-     * @param source 源对象
-     * @param target 目标对象
-     */
-    public static void copyObjectNotNull(Object source, Object target) {
-        if (source == null || target == null) {
-            return;
-        }
-        try {
-            copyObject(source, target, false);
-        } catch (Exception e) {
-            e.fillInStackTrace();
         }
     }
 

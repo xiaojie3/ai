@@ -43,7 +43,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public void save(SysUserSaveDTO saveDTO) {
-        repository.save(MyUtils.copyObject(saveDTO, SysUser.class));
+        SysUser entity = MyUtils.copyObject(saveDTO, SysUser.class);
+        entity.setId(MyUtils.getUUID());
+        repository.save(entity);
     }
 
     @Override

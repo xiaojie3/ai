@@ -1,8 +1,5 @@
 package com.example.ai.system.dto;
 
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Data
