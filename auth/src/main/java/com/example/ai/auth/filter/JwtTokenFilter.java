@@ -1,0 +1,83 @@
+package com.example.ai.auth.filter;
+
+import com.example.ai.common.util.JwtTokenUtil;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@Component
+@RequiredArgsConstructor
+public class JwtTokenFilter extends OncePerRequestFilter {
+
+    private final UserDetailsService userDetailsService;
+
+    /**
+     * 生成令牌（供登录成功后调用）
+     */
+    public String generateToken(String username) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        return JwtTokenUtil.generateToken(userDetails);
+    }
+
+    /**
+     * 核心拦截逻辑：验证 JWT 令牌
+     */
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
+            throws ServletException, IOException {
+
+        // 1. 从请求头中获取 Token（格式：Bearer <token>）
+        String authHeader = request.getHeader("Authorization");
+        String token = null;
+        String username = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7); // 截取 Bearer 后面的令牌
+            try {
+                username = JwtTokenUtil.getUsernameFromToken(token); // 从令牌获取用户名
+            } catch (Exception e) {
+                // 令牌解析失败（过期、签名错误等）
+                response.setContentType("application/json;charset=utf-8");
+                response.getWriter().write("{\"code\":401,\"msg\":\"令牌无效或已过期\"}");
+                return;
+            }
+        }
+
+        // 2. 用户名不为空，且 Security 上下文未认证
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // 3. 从数据库加载用户信息（UserDetails）
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            // 4. 验证令牌有效性
+            if (JwtTokenUtil.validateToken(token, userDetails)) {
+                // 5. 构建认证令牌，存入 Security 上下文（后续权限判断会从这里获取用户角色/权限）
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                // 令牌验证失败
+                response.setContentType("application/json;charset=utf-8");
+                response.getWriter().write("{\"code\":401,\"msg\":\"令牌验证失败\"}");
+                return;
+            }
+        }
+
+        // 自定义过滤逻辑，例如记录请求日志
+        System.out.println("Request URI: " + request.getRequestURI());
+
+        // 6. 令牌验证通过，继续执行后续过滤器
+        filterChain.doFilter(request, response);
+    }
+}

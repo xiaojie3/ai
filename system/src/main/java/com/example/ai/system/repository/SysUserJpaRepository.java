@@ -1,6 +1,6 @@
 package com.example.ai.system.repository;
 
-import com.example.ai.system.entity.SysUser;
+import com.example.ai.common.model.entity.SysUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

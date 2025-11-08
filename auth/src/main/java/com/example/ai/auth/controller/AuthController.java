@@ -1,0 +1,24 @@
+package com.example.ai.auth.controller;
+
+import com.example.ai.auth.dto.LoginDto;
+import com.example.ai.auth.dto.UserDetailsDto;
+import com.example.ai.auth.service.AuthService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/auth") // 统一的路由前缀
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final AuthService authService;
+
+    @PostMapping("/login") // 登录接口
+    public ResponseEntity<LoginDto> login(@RequestBody UserDetailsDto userDetailsDto) {
+        return ResponseEntity.ok(authService.login(userDetailsDto.getUsername(), userDetailsDto.getPassword()));
+    }
+}
