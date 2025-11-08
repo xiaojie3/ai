@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
+		<version>3.5.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example.edu</groupId>
+	<groupId>com.example.ai</groupId>
 	<artifactId>ai</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<name>ai</name>
 	<description>ai</description>
 	<!-- 1. 设置打包类型为 pom -->
@@ -18,24 +18,62 @@
 
 	<!-- 2. 声明子模块 (现在是空的，稍后添加) -->
 	<modules>
-		<module>api-gateway</module><!--路由和认证-->
-		<module>auth-service</module><!--认证-->
-		<module>ai-agent</module><!--AI智能体-->
-		<module>knowledge-base</module><!--知识库-->
+		<module>api</module><!--路由和认证-->
+		<module>auth</module><!--认证-->
 		<module>common</module><!--通用类-->
-		<module>system-administration</module><!--系统管理-->
-		<module>basic-information</module><!--基础资源-->
+		<module>system</module><!--系统管理-->
 	</modules>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
+		<jooq.version>3.20.8</jooq.version>
 		<!-- 定义Spring Cloud版本 -->
 		<spring-cloud.version>2025.0.0</spring-cloud.version>
 		<!-- 定义 MapStruct 版本 -->
 		<org.mapstruct.version>1.6.3</org.mapstruct.version>
+		<knife4j.version>4.4.0</knife4j.version>
+		<commons-lang3.version>3.19.0</commons-lang3.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+			<version>${knife4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq</artifactId>
+			<version>${jooq.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-meta</artifactId>
+			<version>${jooq.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq-codegen</artifactId>
+			<version>${jooq.version}</version>
+		</dependency>
 		<!-- MapStruct 核心依赖 -->
 		<!--<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -64,6 +102,15 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.mysql</groupId>
+				<artifactId>mysql-connector-j</artifactId>
+				<version>9.5.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-logging</artifactId>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
