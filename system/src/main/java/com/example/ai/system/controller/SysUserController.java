@@ -20,6 +20,13 @@ public class SysUserController {
 
     private final SysUserService service;
 
+    @PostMapping("/info")
+    public ResponseEntity<ApiResult<UserInfoDTO>> info() {
+        return ResponseEntity.ok(ApiResult.of(new UserInfoDTO("1", "Super", List.of("R_SUPER"), List.of("B_CODE1", "B_CODE3", "B_CODE4"), "136@163.com")));
+    }
+
+    public record UserInfoDTO(String id, String name, List<String> roles, List<String> menus, String email) {}
+
     /**
      * 分页查询
      *
@@ -38,7 +45,7 @@ public class SysUserController {
      * @param queryDTO 筛选条件
      * @return 查询结果
      */
-    @GetMapping()
+    @PostMapping("/list")
     @Operation(summary = "列表查询")
     public ResponseEntity<ApiResult<List<SysUserDTO>>> queryByList(SysUserQueryDTO queryDTO) {
         return ResponseEntity.ok(ApiResult.of(this.service.list(queryDTO)));
@@ -50,9 +57,9 @@ public class SysUserController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("/{id}")
+    @PostMapping("/find")
     @Operation(summary = "ID查询")
-    public ResponseEntity<ApiResult<SysUserDTO>> queryById(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResult<SysUserDTO>> queryById(String id) {
         return ResponseEntity.ok(ApiResult.of(this.service.FindById(id)));
     }
 
@@ -88,8 +95,8 @@ public class SysUserController {
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping("/notNull")
-    @Operation(summary = "编辑非空参数")
+    @PutMapping("/batchEdit")
+    @Operation(summary = "批量编辑")
     public ResponseEntity<ApiResult<SysUserSaveDTO>> editByNotNull(@RequestBody SysUserSaveDTO saveDTO) {
         this.service.updateNotNll(saveDTO);
         return ResponseEntity.ok(ApiResult.of(saveDTO));
@@ -101,9 +108,9 @@ public class SysUserController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @Operation(summary = "删除")
-    public ResponseEntity<ApiResult<Void>> deleteById(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResult<Void>> deleteById(String id) {
         this.service.deleteById(id);
         return ResponseEntity.ok(ApiResult.of(null));
     }
@@ -114,7 +121,7 @@ public class SysUserController {
      * @param ids 主键列表
      * @return 删除数量
      */
-    @DeleteMapping
+    @PostMapping("/batchDelete")
     @Operation(summary = "批量删除")
     public ResponseEntity<ApiResult<Integer>> deleteByIds(List<String> ids) {
         this.service.deleteByIds(ids);

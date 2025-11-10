@@ -2,13 +2,18 @@ package com.example.ai.system.controller;
 
 import com.example.ai.common.model.ApiResult;
 import com.example.ai.common.model.PageResult;
-import com.example.ai.system.dto.*;
+import com.example.ai.system.dto.SysRoleDTO;
+import com.example.ai.system.dto.SysRoleQueryDTO;
+import com.example.ai.system.dto.SysRoleSaveDTO;
 import com.example.ai.system.service.SysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -38,7 +43,7 @@ public class SysRoleController {
      * @param queryDTO 筛选条件
      * @return 查询结果
      */
-    @GetMapping()
+    @PostMapping("list")
     @Operation(summary = "列表查询")
     public ResponseEntity<ApiResult<List<SysRoleDTO>>> queryByList(SysRoleQueryDTO queryDTO) {
         return ResponseEntity.ok(ApiResult.of(this.service.list(queryDTO)));
@@ -50,9 +55,9 @@ public class SysRoleController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("/{id}")
+    @PostMapping("/find")
     @Operation(summary = "ID查询")
-    public ResponseEntity<ApiResult<SysRoleDTO>> queryById(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResult<SysRoleDTO>> queryById(String id) {
         return ResponseEntity.ok(ApiResult.of(this.service.FindById(id)));
     }
 
@@ -62,7 +67,7 @@ public class SysRoleController {
      * @param saveDTO 实体
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/add")
     @Operation(summary = "新增")
     public ResponseEntity<ApiResult<SysRoleSaveDTO>> add(SysRoleSaveDTO saveDTO) {
         this.service.save(saveDTO);
@@ -75,7 +80,7 @@ public class SysRoleController {
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping
+    @PostMapping("/edit")
     @Operation(summary = "编辑")
     public ResponseEntity<ApiResult<SysRoleSaveDTO>> edit(SysRoleSaveDTO saveDTO) {
         this.service.update(saveDTO);
@@ -83,13 +88,13 @@ public class SysRoleController {
     }
 
     /**
-     * 编辑数据
+     * 批量修改
      *
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping("/notNull")
-    @Operation(summary = "编辑非空参数")
+    @PostMapping("/batchEdit")
+    @Operation(summary = "批量修改")
     public ResponseEntity<ApiResult<SysRoleSaveDTO>> editByNotNull(SysRoleSaveDTO saveDTO) {
         this.service.updateNotNll(saveDTO);
         return ResponseEntity.ok(ApiResult.of(saveDTO));
@@ -101,9 +106,9 @@ public class SysRoleController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @Operation(summary = "删除")
-    public ResponseEntity<ApiResult<Void>> deleteById(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResult<Void>> deleteById(String id) {
         this.service.deleteById(id);
         return ResponseEntity.ok(ApiResult.of(null));
     }
@@ -114,7 +119,7 @@ public class SysRoleController {
      * @param ids 主键列表
      * @return 删除数量
      */
-    @DeleteMapping
+    @PostMapping("/batchDelete")
     @Operation(summary = "批量删除")
     public ResponseEntity<ApiResult<Integer>> deleteByIds(List<String> ids) {
         this.service.deleteByIds(ids);

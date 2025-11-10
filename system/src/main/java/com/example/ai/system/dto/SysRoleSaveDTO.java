@@ -2,9 +2,13 @@ package com.example.ai.system.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class SysRoleSaveDTO {
     private String id;
+
+    private List<String> ids;
 
     // ${column.comment}
     private String roleCode;
