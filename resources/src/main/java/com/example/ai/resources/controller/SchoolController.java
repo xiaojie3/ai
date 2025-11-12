@@ -38,9 +38,9 @@ public class SchoolController {
      * @param queryDTO 筛选条件
      * @return 查询结果
      */
-    @GetMapping()
+    @PostMapping("list")
     @Operation(summary = "列表查询")
-    public ResponseEntity<ApiResult<List<SchoolDTO>>> queryByList(SchoolQueryDTO queryDTO) {
+    public ResponseEntity<ApiResult<List<SchoolDTO>>> queryByList(@RequestBody SchoolQueryDTO queryDTO) {
         return ResponseEntity.ok(ApiResult.of(this.service.list(queryDTO)));
     }
 
@@ -50,9 +50,9 @@ public class SchoolController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("/{id}")
+    @PostMapping("/find")
     @Operation(summary = "ID查询")
-    public ResponseEntity<ApiResult<SchoolDTO>> queryById(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResult<SchoolDTO>> queryById(String id) {
         return ResponseEntity.ok(ApiResult.of(this.service.FindById(id)));
     }
 
@@ -62,9 +62,9 @@ public class SchoolController {
      * @param saveDTO 实体
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/add")
     @Operation(summary = "新增")
-    public ResponseEntity<ApiResult<SchoolSaveDTO>> add(SchoolSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<SchoolSaveDTO>> add(@RequestBody SchoolSaveDTO saveDTO) {
         this.service.save(saveDTO);
         return ResponseEntity.ok(ApiResult.of(saveDTO));
     }
@@ -75,9 +75,9 @@ public class SchoolController {
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping
+    @PostMapping("/edit")
     @Operation(summary = "编辑")
-    public ResponseEntity<ApiResult<SchoolSaveDTO>> edit(SchoolSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<SchoolSaveDTO>> edit(@RequestBody SchoolSaveDTO saveDTO) {
         this.service.update(saveDTO);
         return ResponseEntity.ok(ApiResult.of(saveDTO));
     }
@@ -88,9 +88,9 @@ public class SchoolController {
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping("/notNull")
+    @PostMapping("/batchEdit")
     @Operation(summary = "编辑非空参数")
-    public ResponseEntity<ApiResult<SchoolSaveDTO>> editByNotNull(SchoolSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<SchoolSaveDTO>> batchEdit(@RequestBody SchoolSaveDTO saveDTO) {
         this.service.updateNotNll(saveDTO);
         return ResponseEntity.ok(ApiResult.of(saveDTO));
     }
@@ -101,9 +101,9 @@ public class SchoolController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @Operation(summary = "删除")
-    public ResponseEntity<ApiResult<Void>> deleteById(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResult<Void>> deleteById(String id) {
         this.service.deleteById(id);
         return ResponseEntity.ok(ApiResult.of(null));
     }
@@ -114,9 +114,9 @@ public class SchoolController {
      * @param ids 主键列表
      * @return 删除数量
      */
-    @DeleteMapping
+    @PostMapping("/batchDelete")
     @Operation(summary = "批量删除")
-    public ResponseEntity<ApiResult<Integer>> deleteByIds(List<String> ids) {
+    public ResponseEntity<ApiResult<Integer>> deleteByIds(@RequestBody List<String> ids) {
         this.service.deleteByIds(ids);
         return ResponseEntity.ok(ApiResult.of(ids.size()));
     }
