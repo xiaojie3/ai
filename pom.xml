@@ -22,6 +22,7 @@
 		<module>auth</module><!--认证-->
 		<module>common</module><!--通用类-->
 		<module>system</module><!--系统管理-->
+		<module>resources</module><!--资源管理-->
 	</modules>
 
 	<properties>
