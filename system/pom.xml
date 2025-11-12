@@ -37,7 +37,7 @@
                 <configuration>
                     <jdbc>
                         <driver>com.mysql.cj.jdbc.Driver</driver>
-                        <url>jdbc:mysql://localhost:3306/demo</url> <!-- service name -->
+                        <url>jdbc:mysql://192.168.1.165:3306/demo</url> <!-- service name -->
                         <user>demo</user> <!-- 数据库用户名 -->
                         <password>1234</password> <!-- 数据库密码 -->
                     </jdbc>

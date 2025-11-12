@@ -4,8 +4,10 @@
 package com.example.ai.system.repository.jooq;
 
 
+import com.example.ai.system.repository.jooq.tables.SysPermission;
 import com.example.ai.system.repository.jooq.tables.SysRole;
 import com.example.ai.system.repository.jooq.tables.SysUser;
+import com.example.ai.system.repository.jooq.tables.SysUserRole;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +32,11 @@ public class DefaultSchema extends SchemaImpl {
     public static final DefaultSchema DEFAULT_SCHEMA = new DefaultSchema();
 
     /**
+     * 用户角色表
+     */
+    public final SysPermission SYS_PERMISSION = SysPermission.SYS_PERMISSION;
+
+    /**
      * 角色表
      */
     public final SysRole SYS_ROLE = SysRole.SYS_ROLE;
@@ -38,6 +45,11 @@ public class DefaultSchema extends SchemaImpl {
      * 用户表
      */
     public final SysUser SYS_USER = SysUser.SYS_USER;
+
+    /**
+     * 用户角色表
+     */
+    public final SysUserRole SYS_USER_ROLE = SysUserRole.SYS_USER_ROLE;
 
     /**
      * No further instances allowed
@@ -55,8 +67,10 @@ public class DefaultSchema extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            SysPermission.SYS_PERMISSION,
             SysRole.SYS_ROLE,
-            SysUser.SYS_USER
+            SysUser.SYS_USER,
+            SysUserRole.SYS_USER_ROLE
         );
     }
 }

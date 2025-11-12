@@ -4,8 +4,10 @@
 package com.example.ai.system.repository.jooq;
 
 
+import com.example.ai.system.repository.jooq.tables.SysPermission;
 import com.example.ai.system.repository.jooq.tables.SysRole;
 import com.example.ai.system.repository.jooq.tables.SysUser;
+import com.example.ai.system.repository.jooq.tables.SysUserRole;
 
 
 /**
@@ -13,6 +15,11 @@ import com.example.ai.system.repository.jooq.tables.SysUser;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
+
+    /**
+     * 用户角色表
+     */
+    public static final SysPermission SYS_PERMISSION = SysPermission.SYS_PERMISSION;
 
     /**
      * 角色表
@@ -23,4 +30,9 @@ public class Tables {
      * 用户表
      */
     public static final SysUser SYS_USER = SysUser.SYS_USER;
+
+    /**
+     * 用户角色表
+     */
+    public static final SysUserRole SYS_USER_ROLE = SysUserRole.SYS_USER_ROLE;
 }

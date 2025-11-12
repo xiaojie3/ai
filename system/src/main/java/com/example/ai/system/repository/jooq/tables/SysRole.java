@@ -73,12 +73,12 @@ public class SysRole extends TableImpl<SysRoleRecord> {
     /**
      * The column <code>sys_role.enabled</code>. 是否启用
      */
-    public final TableField<SysRoleRecord, String> ENABLED = createField(DSL.name("enabled"), SQLDataType.VARCHAR(1), this, "是否启用");
+    public final TableField<SysRoleRecord, String> ENABLED = createField(DSL.name("enabled"), SQLDataType.VARCHAR(1).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "是否启用");
 
     /**
      * The column <code>sys_role.create_by</code>. 创建人
      */
-    public final TableField<SysRoleRecord, String> CREATE_BY = createField(DSL.name("create_by"), SQLDataType.VARCHAR(64), this, "创建人");
+    public final TableField<SysRoleRecord, String> CREATE_BY = createField(DSL.name("create_by"), SQLDataType.VARCHAR(64).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "创建人");
 
     /**
      * The column <code>sys_role.create_time</code>. 创建时间
@@ -88,12 +88,12 @@ public class SysRole extends TableImpl<SysRoleRecord> {
     /**
      * The column <code>sys_role.update_by</code>. 更新人
      */
-    public final TableField<SysRoleRecord, String> UPDATE_BY = createField(DSL.name("update_by"), SQLDataType.VARCHAR(64), this, "更新人");
+    public final TableField<SysRoleRecord, String> UPDATE_BY = createField(DSL.name("update_by"), SQLDataType.VARCHAR(64).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "更新人");
 
     /**
      * The column <code>sys_role.update_time</code>. 更新时间
      */
-    public final TableField<SysRoleRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), SQLDataType.LOCALDATETIME(0), this, "更新时间");
+    public final TableField<SysRoleRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.inline("NULL", SQLDataType.LOCALDATETIME)), this, "更新时间");
 
     private SysRole(Name alias, Table<SysRoleRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

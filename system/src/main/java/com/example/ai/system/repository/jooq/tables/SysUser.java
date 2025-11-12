@@ -73,17 +73,17 @@ public class SysUser extends TableImpl<SysUserRecord> {
     /**
      * The column <code>sys_user.email</code>. 邮箱
      */
-    public final TableField<SysUserRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(100), this, "邮箱");
+    public final TableField<SysUserRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(100).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "邮箱");
 
     /**
      * The column <code>sys_user.gender_code</code>. 性别码
      */
-    public final TableField<SysUserRecord, String> GENDER_CODE = createField(DSL.name("gender_code"), SQLDataType.VARCHAR(20), this, "性别码");
+    public final TableField<SysUserRecord, String> GENDER_CODE = createField(DSL.name("gender_code"), SQLDataType.VARCHAR(20).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "性别码");
 
     /**
      * The column <code>sys_user.phone</code>. 手机号码
      */
-    public final TableField<SysUserRecord, String> PHONE = createField(DSL.name("phone"), SQLDataType.VARCHAR(20), this, "手机号码");
+    public final TableField<SysUserRecord, String> PHONE = createField(DSL.name("phone"), SQLDataType.VARCHAR(20).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "手机号码");
 
     /**
      * The column <code>sys_user.user_status_code</code>. 状态码
@@ -93,7 +93,7 @@ public class SysUser extends TableImpl<SysUserRecord> {
     /**
      * The column <code>sys_user.create_by</code>. 创建人
      */
-    public final TableField<SysUserRecord, String> CREATE_BY = createField(DSL.name("create_by"), SQLDataType.VARCHAR(64), this, "创建人");
+    public final TableField<SysUserRecord, String> CREATE_BY = createField(DSL.name("create_by"), SQLDataType.VARCHAR(64).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "创建人");
 
     /**
      * The column <code>sys_user.create_time</code>. 创建时间
@@ -103,12 +103,12 @@ public class SysUser extends TableImpl<SysUserRecord> {
     /**
      * The column <code>sys_user.update_by</code>. 更新人
      */
-    public final TableField<SysUserRecord, String> UPDATE_BY = createField(DSL.name("update_by"), SQLDataType.VARCHAR(64), this, "更新人");
+    public final TableField<SysUserRecord, String> UPDATE_BY = createField(DSL.name("update_by"), SQLDataType.VARCHAR(64).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "更新人");
 
     /**
      * The column <code>sys_user.update_time</code>. 更新时间
      */
-    public final TableField<SysUserRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), SQLDataType.LOCALDATETIME(0), this, "更新时间");
+    public final TableField<SysUserRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.inline("NULL", SQLDataType.LOCALDATETIME)), this, "更新时间");
 
     private SysUser(Name alias, Table<SysUserRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
