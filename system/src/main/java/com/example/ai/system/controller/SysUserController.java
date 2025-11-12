@@ -71,7 +71,7 @@ public class SysUserController {
      */
     @PostMapping
     @Operation(summary = "新增")
-    public ResponseEntity<ApiResult<SysUserSaveDTO>> add(SysUserSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<SysUserSaveDTO>> add(@RequestBody SysUserSaveDTO saveDTO) {
         this.service.save(saveDTO);
         return ResponseEntity.ok(ApiResult.of(saveDTO));
     }
@@ -82,9 +82,9 @@ public class SysUserController {
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping
+    @PostMapping("/edit")
     @Operation(summary = "编辑")
-    public ResponseEntity<ApiResult<SysUserSaveDTO>> edit(SysUserSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<SysUserSaveDTO>> edit(@RequestBody SysUserSaveDTO saveDTO) {
         this.service.update(saveDTO);
         return ResponseEntity.ok(ApiResult.of(saveDTO));
     }
@@ -95,7 +95,7 @@ public class SysUserController {
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping("/batchEdit")
+    @PostMapping("/batchEdit")
     @Operation(summary = "批量编辑")
     public ResponseEntity<ApiResult<SysUserSaveDTO>> editByNotNull(@RequestBody SysUserSaveDTO saveDTO) {
         this.service.updateNotNll(saveDTO);
