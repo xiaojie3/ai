@@ -2,10 +2,10 @@ package com.example.ai.system.service.impl;
 
 import com.example.ai.common.model.PageResult;
 import com.example.ai.common.util.MyUtils;
-import com.example.ai.system.dto.SysUserDTO;
-import com.example.ai.system.dto.SysUserQueryDTO;
-import com.example.ai.system.dto.SysUserSaveDTO;
-import com.example.ai.system.entity.SysUser;
+import com.example.ai.system.model.dto.SysUserDTO;
+import com.example.ai.system.model.dto.SysUserQueryDTO;
+import com.example.ai.system.model.dto.SysUserSaveDTO;
+import com.example.ai.system.model.entity.SysUser;
 import com.example.ai.system.repository.SysUserRepository;
 import com.example.ai.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;

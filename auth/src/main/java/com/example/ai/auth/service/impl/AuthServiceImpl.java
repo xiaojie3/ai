@@ -2,7 +2,7 @@ package com.example.ai.auth.service.impl;
 
 import com.example.ai.auth.dto.LoginDto;
 import com.example.ai.auth.service.AuthService;
-import com.example.ai.common.util.JwtTokenUtil;
+import com.example.ai.auth.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-
-
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userService;
+    private final JwtTokenUtil jwtTokenUtil;
+
     @Override
     public LoginDto login(String account, String password) {
         // 1. 使用 AuthenticationManager 进行认证
@@ -38,10 +38,10 @@ public class AuthServiceImpl implements AuthService {
         UserDetails user = userService.loadUserByUsername(account);
 
         // 4. 使用 JwtService 生成访问令牌和刷新令牌
-        String accessToken = JwtTokenUtil.generateToken(user);
-        String refreshToken = JwtTokenUtil.generateRefreshToken(user);
+        String accessToken = jwtTokenUtil.generateToken(user);
+        String refreshToken = jwtTokenUtil.generateRefreshToken(user);
 
         // 5. 构建并返回 LoginResponse DTO
-        return new LoginDto(accessToken, refreshToken, "Bearer", JwtTokenUtil.expiration);
+        return new LoginDto(accessToken, refreshToken, "Bearer", jwtTokenUtil.getExpiration());
     }
 }

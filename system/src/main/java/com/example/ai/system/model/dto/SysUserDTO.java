@@ -1,4 +1,4 @@
-package com.example.ai.system.dto;
+package com.example.ai.system.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

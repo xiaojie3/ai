@@ -2,9 +2,9 @@ package com.example.ai.system.repository.impl;
 
 import com.example.ai.common.model.BaseJooqRepository;
 import com.example.ai.common.model.PageResult;
-import com.example.ai.system.dto.SysUserDTO;
-import com.example.ai.system.dto.SysUserQueryDTO;
-import com.example.ai.system.entity.SysUser;
+import com.example.ai.system.model.dto.SysUserDTO;
+import com.example.ai.system.model.dto.SysUserQueryDTO;
+import com.example.ai.system.model.entity.SysUser;
 import com.example.ai.system.repository.jooq.Tables;
 import com.example.ai.system.repository.SysUserJpaRepository;
 import com.example.ai.system.repository.SysUserRepository;

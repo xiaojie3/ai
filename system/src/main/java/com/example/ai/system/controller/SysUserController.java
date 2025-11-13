@@ -2,18 +2,23 @@ package com.example.ai.system.controller;
 
 import com.example.ai.common.model.ApiResult;
 import com.example.ai.common.model.PageResult;
-import com.example.ai.system.dto.*;
+import com.example.ai.system.model.dto.SysUserDTO;
+import com.example.ai.system.model.dto.SysUserQueryDTO;
+import com.example.ai.system.model.dto.SysUserSaveDTO;
 import com.example.ai.system.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/system/sysUser")
+@RequestMapping("/system/sysUser")
 @RequiredArgsConstructor
 @Tag(name = "用户信息表")
 public class SysUserController {

@@ -1,27 +1,23 @@
 server:
-  port: 8081
+  port: 81
 spring:
   application:
-    name: auth
+    name: api
   datasource:
     url: jdbc:mysql://192.168.1.165:3306/demo
     username: demo
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    open-in-view: true
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MariaDBDialect
-logging:
-  level:
-    root: debug
-    org:
-      springframework: info
+  data:
+    redis:
+      host: 192.168.1.165
+      port: 6379
+      database: 0
+      timeout: 3000
+  cloud:
+    loadbalancer:
+      cache:
+        enabled: true
 jwt:
   secret: Quantum7Zebra32Falcon19Jade8Horizon47Vortex23Luna56Phoenix14Onyx78Tiger36Ruby29Eagle51Nebula84Fox17Dragon63Sapphire42Wolf91Iris37Hawk68Aurora25Bear74Emerald59Shark28Opal45Owl72Nova31Lion89Amethyst64Dolphin16Pearl53Raven87Orion49Panther35Topaz76Whale24Garnet61Sparrow93Aether58Leopard48Jasper82Falcon39Coral67Osprey21Vega73Stag52Vitrine94Hippo18Period75Raptor33Zodiac69
-  expiration: 315360000
+

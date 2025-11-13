@@ -1,4 +1,4 @@
-package com.example.ai.system.entity;
+package com.example.ai.system.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,35 +11,47 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 /**
- * 角色表
+ * 用户表
  *
  * @author makejava
- * @since 2025-11-09 00:35:31
+ * @since 2025-11-08 23:46:49
  */
 @Entity
-@Table(name = "sys_role")
+@Table(name = "sys_user")
 @Data
 @EntityListeners(AuditingEntityListener.class) // 启用审计监听
-public class SysRole {
+public class SysUser {
     @Id
     @Column(length = 64)
     private String id;
 
-    // ${column.comment}
-    @Column(name = "role_code")
-    private String roleCode;
+    // 账号
+    @Column(name = "account")
+    private String account;
 
-    // 角色名称
-    @Column(name = "role_name")
-    private String roleName;
+    // 名称
+    @Column(name = "username")
+    private String username;
 
-    // 角色描述
-    @Column(name = "description")
-    private String description;
+    // 密码
+    @Column(name = "password")
+    private String password;
 
-    // 是否启用
-    @Column(name = "enabled")
-    private String enabled;
+    // 邮箱
+    @Column(name = "email")
+    private String email;
+
+    // 性别码
+    @Column(name = "gender_code")
+    private String genderCode;
+
+    // 手机号码
+    @Column(name = "phone")
+    private String phone;
+
+    // 状态码
+    @Column(name = "user_status_code")
+    private String userStatusCode;
 
     @CreatedDate
     @Column(name = "create_time", nullable = false, updatable = false) // 不可更新

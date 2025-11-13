@@ -1,9 +1,9 @@
 package com.example.ai.system.service;
 
 import com.example.ai.common.model.PageResult;
-import com.example.ai.system.dto.SysUserDTO;
-import com.example.ai.system.dto.SysUserQueryDTO;
-import com.example.ai.system.dto.SysUserSaveDTO;
+import com.example.ai.system.model.dto.SysUserDTO;
+import com.example.ai.system.model.dto.SysUserQueryDTO;
+import com.example.ai.system.model.dto.SysUserSaveDTO;
 
 import java.util.List;
 

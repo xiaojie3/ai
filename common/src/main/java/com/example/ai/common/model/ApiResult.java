@@ -25,4 +25,19 @@ public class ApiResult<T> {
         apiResult.setMsg(msg);
         return apiResult;
     }
+
+    public static <T> ApiResult<T> error(int code, String msg) {
+        ApiResult<T> apiResult = new ApiResult<>();
+        apiResult.setCode(code);
+        apiResult.setMsg(msg);
+        return apiResult;
+    }
+
+    public static <T> ApiResult<T> error(int code, String msg, T data) {
+        ApiResult<T> apiResult = new ApiResult<>();
+        apiResult.setCode(code);
+        apiResult.setMsg(msg);
+        apiResult.setData(data);
+        return apiResult;
+    }
 }

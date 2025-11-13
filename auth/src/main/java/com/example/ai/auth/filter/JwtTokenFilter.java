@@ -1,6 +1,6 @@
 package com.example.ai.auth.filter;
 
-import com.example.ai.common.util.JwtTokenUtil;
+import com.example.ai.auth.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,12 +23,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
 
+    private final JwtTokenUtil jwtTokenUtil;
+
     /**
      * 生成令牌（供登录成功后调用）
      */
     public String generateToken(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return JwtTokenUtil.generateToken(userDetails);
+        return jwtTokenUtil.generateToken(userDetails);
     }
 
     /**
@@ -45,7 +47,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); // 截取 Bearer 后面的令牌
             try {
-                username = JwtTokenUtil.getUsernameFromToken(token); // 从令牌获取用户名
+                username = jwtTokenUtil.getUsernameFromToken(token); // 从令牌获取用户名
             } catch (Exception e) {
                 // 令牌解析失败（过期、签名错误等）
                 response.setContentType("application/json;charset=utf-8");
@@ -60,7 +62,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             // 4. 验证令牌有效性
-            if (JwtTokenUtil.validateToken(token, userDetails)) {
+            if (jwtTokenUtil.validateToken(token, userDetails)) {
                 // 5. 构建认证令牌，存入 Security 上下文（后续权限判断会从这里获取用户角色/权限）
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

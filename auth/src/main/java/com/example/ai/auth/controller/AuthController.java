@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth") // 统一的路由前缀
+@RequestMapping("/auth") // 统一的路由前缀
 @RequiredArgsConstructor
 public class AuthController {
 

@@ -2,9 +2,9 @@ package com.example.ai.system.controller;
 
 import com.example.ai.common.model.ApiResult;
 import com.example.ai.common.model.PageResult;
-import com.example.ai.system.dto.SysRoleDTO;
-import com.example.ai.system.dto.SysRoleQueryDTO;
-import com.example.ai.system.dto.SysRoleSaveDTO;
+import com.example.ai.system.model.dto.SysRoleDTO;
+import com.example.ai.system.model.dto.SysRoleQueryDTO;
+import com.example.ai.system.model.dto.SysRoleSaveDTO;
 import com.example.ai.system.service.SysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/system/sysRole")
+@RequestMapping("/system/sysRole")
 @RequiredArgsConstructor
 @Tag(name = "角色表")
 public class SysRoleController {

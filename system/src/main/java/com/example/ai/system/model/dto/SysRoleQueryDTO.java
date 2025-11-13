@@ -1,4 +1,4 @@
-package com.example.ai.system.dto;
+package com.example.ai.system.model.dto;
 
 import java.time.LocalDateTime;
 

@@ -1,9 +1,9 @@
 package com.example.ai.system.repository;
 
 import com.example.ai.common.model.PageResult;
-import com.example.ai.system.entity.SysRole;
-import com.example.ai.system.dto.SysRoleDTO;
-import com.example.ai.system.dto.SysRoleQueryDTO;
+import com.example.ai.system.model.entity.SysRole;
+import com.example.ai.system.model.dto.SysRoleDTO;
+import com.example.ai.system.model.dto.SysRoleQueryDTO;
 
 import java.util.List;
 
