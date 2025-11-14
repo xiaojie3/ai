@@ -1,6 +1,6 @@
 package com.example.demo.auth.handler;
 
-import com.example.ai.common.model.ApiResult;
+import com.example.demo.common.model.ApiResult;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

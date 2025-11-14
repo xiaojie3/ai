@@ -14,4 +14,10 @@ public class LoginDto {
     private String tokenType = "Bearer";  // 令牌类型（固定为 Bearer）
 
     private Long expiresIn;  // 访问令牌过期时间（单位：毫秒）
+
+    public LoginDto(String accessToken, String refreshToken, Long expiresIn) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.expiresIn = expiresIn;
+    }
 }

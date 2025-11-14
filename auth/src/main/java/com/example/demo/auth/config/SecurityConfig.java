@@ -2,7 +2,7 @@ package com.example.demo.auth.config;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.example.demo.auth.filter.JwtTokenFilter;
-import com.example.ai.common.model.ApiResult;
+import com.example.demo.common.model.ApiResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

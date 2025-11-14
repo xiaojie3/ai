@@ -1,7 +1,7 @@
 package com.example.demo.api.gateway.filter;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.example.ai.common.model.ApiResult;
+import com.example.demo.common.model.ApiResult;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
