@@ -63,7 +63,7 @@ public class AuthenticationFilter implements GatewayFilter {
             // 3. 验证 Token
             SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
             Claims claims = Jwts.parser()
-                    .verifyWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
+                    .verifyWith(key)
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
