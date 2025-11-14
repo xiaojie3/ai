@@ -39,7 +39,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); // 截取 Bearer 后面的令牌
             try {
-                username = jwtTokenUtil.getUsernameFromToken(token); // 从令牌获取用户名
+                username = jwtTokenUtil.getAccountFromToken(token); // 从令牌获取用户名
             } catch (Exception e) {
                 // 令牌解析失败（过期、签名错误等）
                 response.setContentType("application/json;charset=utf-8");
