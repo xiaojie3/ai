@@ -1,4 +1,4 @@
-package com.example.ai.auth.service;
+package com.example.demo.auth.service;
 
 public interface PermissionService {
 

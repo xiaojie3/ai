@@ -1,4 +1,4 @@
-package com.example.ai.auth.handler;
+package com.example.demo.auth.handler;
 
 import com.example.ai.common.model.ApiResult;
 import jakarta.servlet.http.HttpServletRequest;

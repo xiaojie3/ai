@@ -1,6 +1,6 @@
-package com.example.ai.auth.filter;
+package com.example.demo.auth.filter;
 
-import com.example.ai.auth.util.JwtTokenUtil;
+import com.example.demo.auth.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,14 +24,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     private final JwtTokenUtil jwtTokenUtil;
-
-    /**
-     * 生成令牌（供登录成功后调用）
-     */
-    public String generateToken(String username) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return jwtTokenUtil.generateToken(userDetails);
-    }
 
     /**
      * 核心拦截逻辑：验证 JWT 令牌

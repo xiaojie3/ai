@@ -1,4 +1,4 @@
-package com.example.ai.auth.dto;
+package com.example.demo.auth.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

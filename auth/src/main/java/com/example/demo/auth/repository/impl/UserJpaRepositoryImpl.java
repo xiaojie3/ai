@@ -1,19 +1,21 @@
-package com.example.ai.auth.repository;
+package com.example.demo.auth.repository.impl;
 
-import com.example.ai.auth.dto.UserDetailsDto;
+import com.example.demo.auth.model.dto.UserDetailsDto;
+import com.example.demo.auth.repository.UserRepository;
 import org.jooq.DSLContext;
 import org.jooq.Result;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SysUserJpaRepository {
+public class UserJpaRepositoryImpl implements UserRepository {
     private final DSLContext dsl;
 
-    public SysUserJpaRepository(DSLContext dsl) {
+    public UserJpaRepositoryImpl(DSLContext dsl) {
         this.dsl = dsl;
     }
 
+    @Override
     public UserDetailsDto findByAccount(String account) {
         Result<Record> result = dsl.select().from("sys_user").where("account = '" + account + "'").fetch();
         String password = "";

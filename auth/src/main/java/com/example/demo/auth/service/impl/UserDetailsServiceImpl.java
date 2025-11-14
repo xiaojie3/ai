@@ -1,6 +1,6 @@
-package com.example.ai.auth.service.impl;
+package com.example.demo.auth.service.impl;
 
-import com.example.ai.auth.repository.SysUserJpaRepository;
+import com.example.demo.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final SysUserJpaRepository userJpaRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userJpaRepository.findByAccount(username);
+        return userRepository.findByAccount(username);
     }
 }

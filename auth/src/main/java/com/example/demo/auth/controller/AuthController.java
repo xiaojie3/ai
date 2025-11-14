@@ -1,8 +1,8 @@
-package com.example.ai.auth.controller;
+package com.example.demo.auth.controller;
 
-import com.example.ai.auth.dto.LoginDto;
-import com.example.ai.auth.dto.UserDetailsDto;
-import com.example.ai.auth.service.AuthService;
+import com.example.demo.auth.model.dto.LoginDto;
+import com.example.demo.auth.model.dto.UserDetailsDto;
+import com.example.demo.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,5 +20,10 @@ public class AuthController {
     @PostMapping("/login") // 登录接口
     public ResponseEntity<LoginDto> login(@RequestBody UserDetailsDto userDetailsDto) {
         return ResponseEntity.ok(authService.login(userDetailsDto.getUsername(), userDetailsDto.getPassword()));
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestBody LoginDto loginDto) {
+        return ResponseEntity.ok(authService.refreshToken(loginDto.getRefreshToken()));
     }
 }
