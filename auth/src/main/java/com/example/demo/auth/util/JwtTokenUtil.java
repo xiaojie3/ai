@@ -60,7 +60,7 @@ public class JwtTokenUtil {
     /**
      * 从令牌中获取用户名
      */
-    public String getUsernameFromToken(String token) {
+    public String getAccountFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
     }
 
@@ -68,8 +68,8 @@ public class JwtTokenUtil {
      * 验证令牌有效性（用户名匹配 + 未过期）
      */
     public boolean validateToken(String token, UserDetails userDetails) {
-        String username = getUsernameFromToken(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        String account = getAccountFromToken(token);
+        return account.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     // 解析令牌获取 Claims（负载）

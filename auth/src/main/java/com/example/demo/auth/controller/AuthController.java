@@ -3,8 +3,12 @@ package com.example.demo.auth.controller;
 import com.example.demo.auth.model.dto.LoginDto;
 import com.example.demo.auth.model.dto.UserDetailsDto;
 import com.example.demo.auth.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +27,17 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<LoginDto> refreshToken(@RequestBody LoginDto loginDto) {
         return ResponseEntity.ok(authService.refreshToken(loginDto.getRefreshToken()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logoutUser(HttpServletRequest request) {
+        // 1. 从请求头中提取 Token
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            authService.logout(authHeader.substring(7));
+        }
+        return ResponseEntity.noContent().build();
     }
 }

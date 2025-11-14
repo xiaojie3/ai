@@ -6,6 +6,7 @@ import com.example.demo.auth.repository.RefreshTokenRepository;
 import com.example.demo.auth.service.AuthService;
 import com.example.demo.auth.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -80,9 +81,15 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // 3. 如果有效，加载用户信息并生成新的 Access Token
-        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(refreshToken));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenUtil.getAccountFromToken(refreshToken));
         String newAccessToken = jwtTokenUtil.generateAccessToken(userDetails);
 
         return new LoginDto(newAccessToken, refreshToken, "Bearer", jwtTokenUtil.getAccessTokenExpiration());
+    }
+
+    @Override
+    public void logout(String token) {
+        String account = jwtTokenUtil.getAccountFromToken(token);
+        refreshTokenRepository.deleteByAccount(account);
     }
 }
