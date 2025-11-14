@@ -1,4 +1,4 @@
-package com.example.ai.api;
+package com.example.demo.api.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

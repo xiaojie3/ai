@@ -17,7 +17,7 @@
     </appender>
 
     <!-- 让 RequestLoggingFilter 的日志同时输出到控制台和文件 -->
-    <logger name="com.example.ai.api.filter.RequestLoggingFilter" level="INFO" additivity="false">
+    <logger name="com.example.demo.api.gateway.filter.RequestLoggingFilter" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>

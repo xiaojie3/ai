@@ -1,4 +1,4 @@
-package com.example.ai.api.filter;
+package com.example.demo.api.gateway.filter;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.example.ai.common.model.ApiResult;

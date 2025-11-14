@@ -1,6 +1,6 @@
-package com.example.ai.api.config;
+package com.example.demo.api.gateway.config;
 
-import com.example.ai.api.filter.AuthenticationFilter;
+import com.example.demo.api.gateway.filter.AuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
