@@ -15,9 +15,6 @@ public class SysUserDTO {
     // 名称
     private String username;
 
-    // 密码
-    private String password;
-
     // 邮箱
     private String email;
 

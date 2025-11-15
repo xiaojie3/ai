@@ -1,6 +1,5 @@
 package com.example.demo.system.controller;
 
-import com.example.demo.common.model.ApiResult;
 import com.example.demo.common.model.PageResult;
 import com.example.demo.system.model.dto.SysUserDTO;
 import com.example.demo.system.model.dto.SysUserQueryDTO;
@@ -9,7 +8,6 @@ import com.example.demo.system.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +19,13 @@ import java.util.List;
     @RequestMapping("/system/user")
 @RequiredArgsConstructor
 @Tag(name = "用户信息表")
-public class SysUserController {
+public class UserController {
 
     private final SysUserService service;
 
     @PostMapping("/info")
-    public ResponseEntity<ApiResult<UserInfoDTO>> info() {
-        return ResponseEntity.ok(ApiResult.of(new UserInfoDTO("1", "Super", List.of("R_SUPER"), List.of("B_CODE1", "B_CODE3", "B_CODE4"), "136@163.com")));
+    public UserInfoDTO info() {
+        return new UserInfoDTO("1", "Super", List.of("R_SUPER"), List.of("B_CODE1", "B_CODE3", "B_CODE4"), "136@163.com");
     }
 
     public record UserInfoDTO(String id, String name, List<String> roles, List<String> menus, String email) {}
@@ -40,8 +38,8 @@ public class SysUserController {
      */
     @PostMapping("/query")
     @Operation(summary = "分页查询")
-    public ResponseEntity<ApiResult<PageResult<SysUserDTO>>> queryByPage(@RequestBody SysUserQueryDTO queryDTO) {
-        return ResponseEntity.ok(ApiResult.of(this.service.queryByPage(queryDTO)));
+    public PageResult<SysUserDTO> queryByPage(@RequestBody SysUserQueryDTO queryDTO) {
+        return service.queryByPage(queryDTO);
     }
 
     /**
@@ -52,8 +50,8 @@ public class SysUserController {
      */
     @PostMapping("/list")
     @Operation(summary = "列表查询")
-    public ResponseEntity<ApiResult<List<SysUserDTO>>> queryByList(SysUserQueryDTO queryDTO) {
-        return ResponseEntity.ok(ApiResult.of(this.service.list(queryDTO)));
+    public List<SysUserDTO> queryByList(SysUserQueryDTO queryDTO) {
+        return service.list(queryDTO);
     }
 
     /**
@@ -64,8 +62,8 @@ public class SysUserController {
      */
     @PostMapping("/find")
     @Operation(summary = "ID查询")
-    public ResponseEntity<ApiResult<SysUserDTO>> queryById(String id) {
-        return ResponseEntity.ok(ApiResult.of(this.service.FindById(id)));
+    public SysUserDTO queryById(String id) {
+        return service.FindById(id);
     }
 
     /**
@@ -76,9 +74,9 @@ public class SysUserController {
      */
     @PostMapping
     @Operation(summary = "新增")
-    public ResponseEntity<ApiResult<SysUserSaveDTO>> add(@RequestBody SysUserSaveDTO saveDTO) {
-        this.service.save(saveDTO);
-        return ResponseEntity.ok(ApiResult.of(saveDTO));
+    public SysUserSaveDTO add(@RequestBody SysUserSaveDTO saveDTO) {
+        service.save(saveDTO);
+        return saveDTO;
     }
 
     /**
@@ -89,9 +87,9 @@ public class SysUserController {
      */
     @PostMapping("/edit")
     @Operation(summary = "编辑")
-    public ResponseEntity<ApiResult<SysUserSaveDTO>> edit(@RequestBody SysUserSaveDTO saveDTO) {
+    public SysUserSaveDTO edit(@RequestBody SysUserSaveDTO saveDTO) {
         this.service.update(saveDTO);
-        return ResponseEntity.ok(ApiResult.of(saveDTO));
+        return saveDTO;
     }
 
     /**
@@ -102,22 +100,20 @@ public class SysUserController {
      */
     @PostMapping("/batchEdit")
     @Operation(summary = "批量编辑")
-    public ResponseEntity<ApiResult<SysUserSaveDTO>> editByNotNull(@RequestBody SysUserSaveDTO saveDTO) {
+    public SysUserSaveDTO editByNotNull(@RequestBody SysUserSaveDTO saveDTO) {
         this.service.updateNotNll(saveDTO);
-        return ResponseEntity.ok(ApiResult.of(saveDTO));
+        return saveDTO;
     }
 
     /**
      * 删除数据
      *
      * @param id 主键
-     * @return 删除是否成功
      */
     @PostMapping("/delete")
     @Operation(summary = "删除")
-    public ResponseEntity<ApiResult<Void>> deleteById(String id) {
+    public void deleteById(String id) {
         this.service.deleteById(id);
-        return ResponseEntity.ok(ApiResult.of(null));
     }
 
     /**
@@ -128,9 +124,9 @@ public class SysUserController {
      */
     @PostMapping("/batchDelete")
     @Operation(summary = "批量删除")
-    public ResponseEntity<ApiResult<Integer>> deleteByIds(List<String> ids) {
+    public Integer deleteByIds(List<String> ids) {
         this.service.deleteByIds(ids);
-        return ResponseEntity.ok(ApiResult.of(ids.size()));
+        return ids.size();
     }
 }
 

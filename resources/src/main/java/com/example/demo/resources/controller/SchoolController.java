@@ -34,7 +34,7 @@ public class SchoolController {
     @PostMapping("/query")
     @Operation(summary = "分页查询")
     public ResponseEntity<ApiResult<PageResult<SchoolDTO>>> queryByPage(@RequestBody SchoolQueryDTO queryDTO) {
-        return ResponseEntity.ok(ApiResult.of(this.service.queryByPage(queryDTO)));
+        return ResponseEntity.ok(ApiResult.success(this.service.queryByPage(queryDTO)));
     }
 
     /**
@@ -46,7 +46,7 @@ public class SchoolController {
     @PostMapping("list")
     @Operation(summary = "列表查询")
     public ResponseEntity<ApiResult<List<SchoolDTO>>> queryByList(@RequestBody SchoolQueryDTO queryDTO) {
-        return ResponseEntity.ok(ApiResult.of(this.service.list(queryDTO)));
+        return ResponseEntity.ok(ApiResult.success(this.service.list(queryDTO)));
     }
 
     /**
@@ -58,7 +58,7 @@ public class SchoolController {
     @PostMapping("/find")
     @Operation(summary = "ID查询")
     public ResponseEntity<ApiResult<SchoolDTO>> queryById(String id) {
-        return ResponseEntity.ok(ApiResult.of(this.service.FindById(id)));
+        return ResponseEntity.ok(ApiResult.success(this.service.FindById(id)));
     }
 
     /**
@@ -71,7 +71,7 @@ public class SchoolController {
     @Operation(summary = "新增")
     public ResponseEntity<ApiResult<SchoolSaveDTO>> add(@RequestBody SchoolSaveDTO saveDTO) {
         this.service.save(saveDTO);
-        return ResponseEntity.ok(ApiResult.of(saveDTO));
+        return ResponseEntity.ok(ApiResult.success(saveDTO));
     }
 
     /**
@@ -84,7 +84,7 @@ public class SchoolController {
     @Operation(summary = "编辑")
     public ResponseEntity<ApiResult<SchoolSaveDTO>> edit(@RequestBody SchoolSaveDTO saveDTO) {
         this.service.update(saveDTO);
-        return ResponseEntity.ok(ApiResult.of(saveDTO));
+        return ResponseEntity.ok(ApiResult.success(saveDTO));
     }
 
     /**
@@ -97,7 +97,7 @@ public class SchoolController {
     @Operation(summary = "编辑非空参数")
     public ResponseEntity<ApiResult<SchoolSaveDTO>> batchEdit(@RequestBody SchoolSaveDTO saveDTO) {
         this.service.updateNotNll(saveDTO);
-        return ResponseEntity.ok(ApiResult.of(saveDTO));
+        return ResponseEntity.ok(ApiResult.success(saveDTO));
     }
 
     /**
@@ -110,7 +110,7 @@ public class SchoolController {
     @Operation(summary = "删除")
     public ResponseEntity<ApiResult<Void>> deleteById(String id) {
         this.service.deleteById(id);
-        return ResponseEntity.ok(ApiResult.of(null));
+        return ResponseEntity.ok(ApiResult.success(null));
     }
 
     /**
@@ -123,7 +123,7 @@ public class SchoolController {
     @Operation(summary = "批量删除")
     public ResponseEntity<ApiResult<Integer>> deleteByIds(@RequestBody List<String> ids) {
         this.service.deleteByIds(ids);
-        return ResponseEntity.ok(ApiResult.of(ids.size()));
+        return ResponseEntity.ok(ApiResult.success(ids.size()));
     }
 }
 
