@@ -26,6 +26,13 @@ public class ApiResult<T> {
         return apiResult;
     }
 
+    public static <T> ApiResult<T> error(String msg) {
+        ApiResult<T> apiResult = new ApiResult<>();
+        apiResult.setCode(500);
+        apiResult.setMsg(msg);
+        return apiResult;
+    }
+
     public static <T> ApiResult<T> error(int code, String msg) {
         ApiResult<T> apiResult = new ApiResult<>();
         apiResult.setCode(code);

@@ -57,7 +57,7 @@ public class SecurityConfig {
         return (request, response, authException) -> {
             response.setContentType("application/json;charset=utf-8");
             ApiResult<String> result = new ApiResult<>();
-            result.setCode(HttpStatus.UNAUTHORIZED.value());
+            result.setCode(HttpStatus.FORBIDDEN.value());
             result.setMsg("请登录！");
             result.setData(request.getRequestURI());
             response.getWriter().write(JSONObject.toJSONString(result));

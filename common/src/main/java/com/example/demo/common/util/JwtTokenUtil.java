@@ -18,8 +18,8 @@ public class JwtTokenUtil {
     /**
      * 从令牌中获取用户名
      */
-    public static String getAccountFromToken(String token) {
-        return getClaimsFromToken(token).getSubject();
+    public static String getAccountFromToken(String token) {;
+        return getClaimsFromToken(token.replace("Bearer ", "")).getSubject();
     }
 
     // 解析令牌获取 Claims（负载）

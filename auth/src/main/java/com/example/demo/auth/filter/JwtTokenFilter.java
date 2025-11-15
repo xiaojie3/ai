@@ -32,12 +32,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        // 1. 从请求头中获取 Token（格式：Bearer <token>）
-        String authHeader = request.getHeader("Authorization");
-        String token = null;
+        // 1. 从请求头中获取 Token
+        String token = request.getHeader("Authorization");
         String username = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7); // 截取 Bearer 后面的令牌
+        if (token != null) {
             try {
                 username = jwtTokenUtil.getAccountFromToken(token); // 从令牌获取用户名
             } catch (Exception e) {

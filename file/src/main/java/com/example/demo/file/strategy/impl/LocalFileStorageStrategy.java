@@ -37,7 +37,7 @@ public class LocalFileStorageStrategy implements FileStorageStrategy {
     }
 
     @Override
-    public boolean delete(String filePath) throws IOException {
+    public boolean delete(String filePath) {
         return new File(filePath).delete();
     }
 }

@@ -34,9 +34,9 @@ public class AuthController {
     @PostMapping("/logout")
     public ApiResult<String> logoutUser(HttpServletRequest request) {
         // 1. 从请求头中提取 Token
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            authService.logout(authHeader.substring(7));
+        String token = request.getHeader("Authorization");
+        if(token != null) {
+            authService.logout(token);
         }
         String msg = messageSource.getMessage("logout.success", null, LocaleContextHolder.getLocale());
         return ApiResult.success(null, msg);

@@ -61,7 +61,7 @@ public class JwtTokenUtil {
      * 从令牌中获取用户名
      */
     public String getAccountFromToken(String token) {
-        return getClaimsFromToken(token).getSubject();
+        return com.example.demo.common.util.JwtTokenUtil.getAccountFromToken(token);
     }
 
     /**

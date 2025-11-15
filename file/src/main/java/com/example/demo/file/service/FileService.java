@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.util.List;
 
 public interface FileService {
-    FileDTO upload(MultipartFile file, String directoryId, String uploaderId) throws IOException;
+    FileDTO upload(MultipartFile file, String directoryId, String userId) throws IOException;
 
-    boolean checkDownloadPermission(String fileId, String userId, List<String> userRoleCodes);
+    boolean checkDownloadPermission(String fileId, String userId, List<String> userRoleCodeList);
+
+    void delete(String fileId) throws IOException;
 
     void download(String fileId, HttpServletResponse response) throws IOException;
 }

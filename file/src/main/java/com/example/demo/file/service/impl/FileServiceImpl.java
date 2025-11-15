@@ -1,5 +1,6 @@
 package com.example.demo.file.service.impl;
 
+import com.example.demo.common.util.JwtTokenUtil;
 import com.example.demo.file.model.dto.FileDTO;
 import com.example.demo.file.model.entity.FileDirectoryRole;
 import com.example.demo.file.model.entity.FileMetadata;
@@ -38,7 +39,7 @@ public class FileServiceImpl implements FileService {
     private final FileDirectoryRoleRepository fileDirectoryRoleRepository;
 
     @Override
-    public FileDTO upload(MultipartFile file, String directoryId, String uploaderId) throws IOException {
+    public FileDTO upload(MultipartFile file, String directoryId, String userId) throws IOException {
         // 1. 计算文件MD5（防重复上传）
         String md5 = Md5Util.calculateMd5(file.getInputStream());
         List<FileMetadata> existFileList = fileMetadataRepository.findByMd5(md5);
@@ -60,7 +61,7 @@ public class FileServiceImpl implements FileService {
         fileMetadata.setFilePath(filePath);
         fileMetadata.setFileSize(file.getSize());
         fileMetadata.setFileType(file.getContentType());
-        fileMetadata.setUploaderId(uploaderId);
+        fileMetadata.setUploaderId(userId);
         fileMetadata.setDirectoryId(directoryId);
         fileMetadata.setMd5(md5);
         fileMetadata.setCreateTime(LocalDateTime.now());
@@ -70,7 +71,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public boolean checkDownloadPermission(String fileId, String account, List<String> userRoleCodes) {
+    public boolean checkDownloadPermission(String fileId, String userId, List<String> userRoleCodeList) {
         // 1. 查询文件元数据
         FileMetadata fileMetadata = fileMetadataRepository.findById(fileId).orElseThrow(() -> {
             String msg = messageSource.getMessage("file.notExists", null, LocaleContextHolder.getLocale());
@@ -78,7 +79,7 @@ public class FileServiceImpl implements FileService {
         });
 
         // 2. 条件1：上传者专属下载
-        if (account.equals(fileMetadata.getUploaderId())) {
+        if (userId.equals(fileMetadata.getUploaderId())) {
             return true;
         }
 
@@ -88,7 +89,16 @@ public class FileServiceImpl implements FileService {
 
         // 检查用户角色是否与授权角色匹配
         Set<String> authRoles = authList.stream().map(FileDirectoryRole::getRoleId).collect(Collectors.toSet());
-        return userRoleCodes.stream().anyMatch(authRoles::contains);
+        return userRoleCodeList.stream().anyMatch(authRoles::contains);
+    }
+
+    @Override
+    public void delete(String fileId) throws IOException {
+        FileMetadata fileMetadata = fileMetadataRepository.findById(fileId).orElseThrow(() -> {
+            String msg = messageSource.getMessage("file.notExists", null, LocaleContextHolder.getLocale());
+            return new RuntimeException(msg);
+        });
+        fileStorageStrategy.delete(fileMetadata.getFilePath());
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.example.demo.auth.service.impl;
 
-import com.example.demo.auth.model.RefreshToken;
+import com.example.demo.auth.model.entity.RefreshToken;
 import com.example.demo.auth.model.dto.LoginDto;
 import com.example.demo.auth.repository.RefreshTokenRepository;
 import com.example.demo.auth.service.AuthService;
@@ -71,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenRepository.save(authRefreshToken);
 
         // 6. 构建并返回 LoginResponse DTO
-        return new LoginDto(accessToken, refreshToken, "Bearer", jwtTokenUtil.getAccessTokenExpiration());
+        return new LoginDto(accessToken, refreshToken, jwtTokenUtil.getAccessTokenExpiration());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenUtil.getAccountFromToken(refreshToken));
         String newAccessToken = jwtTokenUtil.generateAccessToken(userDetails);
 
-        return new LoginDto(newAccessToken, refreshToken, "Bearer", jwtTokenUtil.getAccessTokenExpiration());
+        return new LoginDto(newAccessToken, refreshToken, jwtTokenUtil.getAccessTokenExpiration());
     }
 
     @Override
