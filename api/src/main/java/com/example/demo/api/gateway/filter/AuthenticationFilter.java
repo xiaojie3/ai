@@ -71,7 +71,7 @@ public class AuthenticationFilter implements GatewayFilter {
             // 4. Token 验证成功，提取用户信息并添加到请求头中
             String account = claims.getSubject();
 
-            // 创建一个新的请求，将用户信息添加到 Header
+            // 创建一个新地请求，将用户信息添加到 Header
             ServerHttpRequest mutatedRequest = request.mutate()
                     .header("X-Account", account)
                     .build();
