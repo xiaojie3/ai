@@ -23,12 +23,12 @@ public class AuthController {
 
     @PostMapping("/login") // 登录接口
     public ApiResult<LoginDto> login(@RequestBody UserDetailsDto userDetailsDto) {
-        return ApiResult.of(authService.login(userDetailsDto.getUsername(), userDetailsDto.getPassword()));
+        return ApiResult.success(authService.login(userDetailsDto.getUsername(), userDetailsDto.getPassword()));
     }
 
     @PostMapping("/refresh-token")
     public ApiResult<LoginDto> refreshToken(@RequestBody LoginDto loginDto) {
-        return ApiResult.of(authService.refreshToken(loginDto.getRefreshToken()));
+        return ApiResult.success(authService.refreshToken(loginDto.getRefreshToken()));
     }
 
     @PostMapping("/logout")
@@ -39,6 +39,6 @@ public class AuthController {
             authService.logout(authHeader.substring(7));
         }
         String msg = messageSource.getMessage("logout.success", null, LocaleContextHolder.getLocale());
-        return ApiResult.of(null, msg);
+        return ApiResult.success(null, msg);
     }
 }

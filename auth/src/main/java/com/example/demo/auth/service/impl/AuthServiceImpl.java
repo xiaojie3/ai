@@ -7,6 +7,8 @@ import com.example.demo.auth.service.AuthService;
 import com.example.demo.auth.util.JwtTokenUtil;
 import com.example.demo.common.util.MyUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,12 +24,12 @@ import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MessageSource messageSource;
 
     @Override
     @Transactional
@@ -76,13 +78,13 @@ public class AuthServiceImpl implements AuthService {
     public LoginDto refreshToken(String refreshToken) {
         // 1. 从数据库中查找并验证 Refresh Token
         RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                .orElseThrow(() -> new RuntimeException(messageSource.getMessage("refresh-token.invalid", null, LocaleContextHolder.getLocale())));
 
         // --- 重点修改部分 ---
         // 2. 检查 Token 是否过期 (使用 LocalDateTime.now() 进行比较)
         if (storedToken.getExpiresTime().isBefore(LocalDateTime.now())) {
             refreshTokenRepository.delete(storedToken);
-            throw new RuntimeException("Refresh token expired");
+            throw new RuntimeException("refresh-token.expired");
         }
 
         // 3. 如果有效，加载用户信息并生成新的 Access Token
