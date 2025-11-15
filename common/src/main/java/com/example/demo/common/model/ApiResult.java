@@ -13,13 +13,13 @@ public class ApiResult<T> {
 
     public ApiResult() {}
 
-    public static <T> ApiResult<T> of(T data) {
+    public static <T> ApiResult<T> success(T data) {
         ApiResult<T> apiResult = new ApiResult<>();
         apiResult.setData(data);
         return apiResult;
     }
 
-    public static <T> ApiResult<T> of(T data, String msg) {
+    public static <T> ApiResult<T> success(T data, String msg) {
         ApiResult<T> apiResult = new ApiResult<>();
         apiResult.setData(data);
         apiResult.setMsg(msg);
