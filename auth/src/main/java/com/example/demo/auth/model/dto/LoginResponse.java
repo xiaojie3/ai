@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LoginDto {
+public class LoginResponse {
 
     private String accessToken;  // 访问令牌（用于访问受保护接口）
 
@@ -15,7 +15,7 @@ public class LoginDto {
 
     private Long expiresIn;  // 访问令牌过期时间（单位：毫秒）
 
-    public LoginDto(String accessToken, String refreshToken, Long expiresIn) {
+    public LoginResponse(String accessToken, String refreshToken, Long expiresIn) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.expiresIn = expiresIn;

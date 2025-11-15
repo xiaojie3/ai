@@ -1,5 +1,7 @@
 package com.example.demo.auth.filter;
 
+import com.example.demo.auth.model.entity.User;
+import com.example.demo.auth.service.UserService;
 import com.example.demo.auth.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,7 +23,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -34,10 +36,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         // 1. 从请求头中获取 Token
         String token = request.getHeader("Authorization");
-        String username = null;
+        String userId = null;
         if (token != null) {
             try {
-                username = jwtTokenUtil.getAccountFromToken(token); // 从令牌获取用户名
+                userId = jwtTokenUtil.getUserIdFromToken(token); // 从令牌获取用户名
             } catch (Exception e) {
                 // 令牌解析失败（过期、签名错误等）
                 response.setContentType("application/json;charset=utf-8");
@@ -47,15 +49,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         // 2. 用户名不为空，且 Security 上下文未认证
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // 3. 从数据库加载用户信息（UserDetails）
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            User user = userService.findById(userId);
 
             // 4. 验证令牌有效性
-            if (jwtTokenUtil.validateToken(token, userDetails)) {
+            if (jwtTokenUtil.validateToken(token, user.getId())) {
                 // 5. 构建认证令牌，存入 Security 上下文（后续权限判断会从这里获取用户角色/权限）
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        user, null, user.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {

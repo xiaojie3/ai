@@ -1,9 +1,11 @@
 package com.example.demo.auth.service.impl;
 
+import com.example.demo.auth.model.dto.LoginResponse;
 import com.example.demo.auth.model.entity.RefreshToken;
-import com.example.demo.auth.model.dto.LoginDto;
+import com.example.demo.auth.model.entity.User;
 import com.example.demo.auth.repository.RefreshTokenRepository;
 import com.example.demo.auth.service.AuthService;
+import com.example.demo.auth.service.UserService;
 import com.example.demo.auth.util.JwtTokenUtil;
 import com.example.demo.common.util.MyUtils;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +26,14 @@ import java.time.ZoneId;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MessageSource messageSource;
 
     @Override
     @Transactional
-    public LoginDto login(String account, String password) {
+    public LoginResponse login(String account, String password) {
         // 1. 使用 AuthenticationManager 进行认证
         // UsernamePasswordAuthenticationToken 是一个包含用户名和密码的认证请求对象
         Authentication authentication = authenticationManager.authenticate(
@@ -48,11 +48,11 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 3. 认证成功后，加载完整的用户信息
-        UserDetails user = userDetailsService.loadUserByUsername(account);
+        User user = userService.findByAccount(account);
 
         // 4. 使用 JwtService 生成访问令牌和刷新令牌
-        String accessToken = jwtTokenUtil.generateAccessToken(user);
-        String refreshToken = jwtTokenUtil.generateRefreshToken(user);
+        String accessToken = jwtTokenUtil.generateAccessToken(user.getId());
+        String refreshToken = jwtTokenUtil.generateRefreshToken(user.getId());
 
         // 5. 保存 Refresh Token 到数据库
         // 可以先删除该用户之前所有的 Refresh Token，以实现单点登录
@@ -71,11 +71,11 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenRepository.save(authRefreshToken);
 
         // 6. 构建并返回 LoginResponse DTO
-        return new LoginDto(accessToken, refreshToken, jwtTokenUtil.getAccessTokenExpiration());
+        return new LoginResponse(accessToken, refreshToken, jwtTokenUtil.getAccessTokenExpiration());
     }
 
     @Override
-    public LoginDto refreshToken(String refreshToken) {
+    public LoginResponse refreshToken(String refreshToken) {
         // 1. 从数据库中查找并验证 Refresh Token
         RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException(messageSource.getMessage("refresh-token.invalid", null, LocaleContextHolder.getLocale())));
@@ -88,15 +88,15 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // 3. 如果有效，加载用户信息并生成新的 Access Token
-        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenUtil.getAccountFromToken(refreshToken));
-        String newAccessToken = jwtTokenUtil.generateAccessToken(userDetails);
+        User user = userService.findById(jwtTokenUtil.getUserIdFromToken(refreshToken));
+        String newAccessToken = jwtTokenUtil.generateAccessToken(user.getId());
 
-        return new LoginDto(newAccessToken, refreshToken, jwtTokenUtil.getAccessTokenExpiration());
+        return new LoginResponse(newAccessToken, refreshToken, jwtTokenUtil.getAccessTokenExpiration());
     }
 
     @Override
     public void logout(String token) {
-        String account = jwtTokenUtil.getAccountFromToken(token);
+        String account = jwtTokenUtil.getUserIdFromToken(token);
         refreshTokenRepository.deleteByAccount(account);
     }
 }

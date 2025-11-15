@@ -1,10 +1,10 @@
 package com.example.demo.auth.service;
 
-import com.example.demo.auth.model.dto.LoginDto;
+import com.example.demo.auth.model.dto.LoginResponse;
 
 public interface AuthService {
-    LoginDto login(String account, String password);
-    LoginDto refreshToken(String refreshToken);
+    LoginResponse login(String account, String password);
+    LoginResponse refreshToken(String refreshToken);
 
     void logout(String token);
 }

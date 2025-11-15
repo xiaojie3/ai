@@ -34,23 +34,23 @@ public class JwtTokenUtil {
     /**
      * 生成 Access Token
      */
-    public String generateAccessToken(UserDetails userDetails) {
-        return generateToken(userDetails, accessTokenExpiration);
+    public String generateAccessToken(String userId) {
+        return generateToken(userId, accessTokenExpiration);
     }
 
     /**
      * 生成 Refresh Token
      */
-    public String generateRefreshToken(UserDetails userDetails) {
-        return generateToken(userDetails, refreshTokenExpiration);
+    public String generateRefreshToken(String userId) {
+        return generateToken(userId, refreshTokenExpiration);
     }
 
     /**
      * 生成 Token 的通用方法
      */
-    private String generateToken(UserDetails userDetails, long expiration) {
+    private String generateToken(String userId, long expiration) {
         return Jwts.builder()
-                .subject(userDetails.getUsername())
+                .subject(userId)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSecretKey(), Jwts.SIG.HS256)
@@ -60,16 +60,16 @@ public class JwtTokenUtil {
     /**
      * 从令牌中获取用户名
      */
-    public String getAccountFromToken(String token) {
+    public String getUserIdFromToken(String token) {
         return com.example.demo.common.util.JwtTokenUtil.getAccountFromToken(token);
     }
 
     /**
      * 验证令牌有效性（用户名匹配 + 未过期）
      */
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String account = getAccountFromToken(token);
-        return account.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    public boolean validateToken(String token, String userId) {
+        String account = getUserIdFromToken(token);
+        return account.equals(userId) && !isTokenExpired(token);
     }
 
     // 解析令牌获取 Claims（负载）

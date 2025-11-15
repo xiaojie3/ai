@@ -1,8 +1,8 @@
-package com.example.demo.auth.repository;
+package com.example.demo.auth.service;
 
 import com.example.demo.auth.model.entity.User;
 
-public interface UserRepository {
+public interface UserService {
     User findByAccount(String account);
 
     User findById(String account);

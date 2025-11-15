@@ -1,6 +1,6 @@
 package com.example.demo.auth.controller;
 
-import com.example.demo.auth.model.dto.LoginDto;
+import com.example.demo.auth.model.dto.LoginResponse;
 import com.example.demo.auth.model.dto.UserDetailsDto;
 import com.example.demo.auth.service.AuthService;
 import com.example.demo.common.model.ApiResult;
@@ -22,12 +22,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login") // 登录接口
-    public ApiResult<LoginDto> login(@RequestBody UserDetailsDto userDetailsDto) {
+    public ApiResult<LoginResponse> login(@RequestBody UserDetailsDto userDetailsDto) {
         return ApiResult.success(authService.login(userDetailsDto.getUsername(), userDetailsDto.getPassword()));
     }
 
     @PostMapping("/refresh-token")
-    public ApiResult<LoginDto> refreshToken(@RequestBody LoginDto loginDto) {
+    public ApiResult<LoginResponse> refreshToken(@RequestBody LoginResponse loginDto) {
         return ApiResult.success(authService.refreshToken(loginDto.getRefreshToken()));
     }
 
