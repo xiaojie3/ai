@@ -5,6 +5,7 @@ import com.example.demo.auth.model.dto.LoginDto;
 import com.example.demo.auth.repository.RefreshTokenRepository;
 import com.example.demo.auth.service.AuthService;
 import com.example.demo.auth.util.JwtTokenUtil;
+import com.example.demo.common.util.MyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -20,6 +22,7 @@ import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
@@ -27,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
+    @Transactional
     public LoginDto login(String account, String password) {
         // 1. 使用 AuthenticationManager 进行认证
         // UsernamePasswordAuthenticationToken 是一个包含用户名和密码的认证请求对象
@@ -53,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenRepository.deleteByAccount(user.getUsername());
 
         RefreshToken authRefreshToken = new RefreshToken();
+        authRefreshToken.setId(MyUtils.getUUID());
         authRefreshToken.setAccount(user.getUsername());
         authRefreshToken.setRefreshToken(refreshToken);
         // 计算过期时间点 (Instant)
@@ -60,6 +65,7 @@ public class AuthServiceImpl implements AuthService {
         // 转换为 LocalDateTime (使用系统默认时区，可以指定时区，如 ZoneId.of("UTC"))
         LocalDateTime expiresLocalDateTime = expirationInstant.atZone(ZoneId.systemDefault()).toLocalDateTime();
         authRefreshToken.setExpiresTime(expiresLocalDateTime);
+        authRefreshToken.setCreateTime(LocalDateTime.now());
         refreshTokenRepository.save(authRefreshToken);
 
         // 6. 构建并返回 LoginResponse DTO

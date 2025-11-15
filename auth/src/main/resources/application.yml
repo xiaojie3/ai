@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: auth
+  messages:
+    basename: i18n/messages
+    encoding: utf-8
   datasource:
     url: jdbc:mysql://192.168.1.165:3306/demo
     username: demo

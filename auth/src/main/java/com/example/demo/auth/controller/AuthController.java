@@ -3,9 +3,11 @@ package com.example.demo.auth.controller;
 import com.example.demo.auth.model.dto.LoginDto;
 import com.example.demo.auth.model.dto.UserDetailsDto;
 import com.example.demo.auth.service.AuthService;
+import com.example.demo.common.model.ApiResult;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,25 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+    private final MessageSource messageSource;
     private final AuthService authService;
 
     @PostMapping("/login") // 登录接口
-    public ResponseEntity<LoginDto> login(@RequestBody UserDetailsDto userDetailsDto) {
-        return ResponseEntity.ok(authService.login(userDetailsDto.getUsername(), userDetailsDto.getPassword()));
+    public ApiResult<LoginDto> login(@RequestBody UserDetailsDto userDetailsDto) {
+        return ApiResult.of(authService.login(userDetailsDto.getUsername(), userDetailsDto.getPassword()));
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<LoginDto> refreshToken(@RequestBody LoginDto loginDto) {
-        return ResponseEntity.ok(authService.refreshToken(loginDto.getRefreshToken()));
+    public ApiResult<LoginDto> refreshToken(@RequestBody LoginDto loginDto) {
+        return ApiResult.of(authService.refreshToken(loginDto.getRefreshToken()));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logoutUser(HttpServletRequest request) {
+    public ApiResult<String> logoutUser(HttpServletRequest request) {
         // 1. 从请求头中提取 Token
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             authService.logout(authHeader.substring(7));
         }
-        return ResponseEntity.noContent().build();
+        String msg = messageSource.getMessage("logout.success", null, LocaleContextHolder.getLocale());
+        return ApiResult.of(null, msg);
     }
 }
