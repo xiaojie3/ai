@@ -10,6 +10,19 @@
 
     <artifactId>file</artifactId>
     <dependencies>
+        <!-- 图片处理核心库 -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.21</version>
+        </dependency>
+
+        <!-- 文件类型校验（Apache Tika） -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>3.2.3</version>
+        </dependency>
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>

@@ -37,7 +37,7 @@ public class AuthenticationFilter implements GatewayFilter {
         // 1. 检查是否是公开接口（如登录、注册），如果是则直接放行
         // 这里可以用一个列表或配置来管理白名单
         String path = request.getPath().value();
-        if (path.startsWith("/api/auth/login") || path.startsWith("/api/auth/register")) {
+        if (path.startsWith("/api/auth/login") || path.startsWith("/api/auth/register") || path.startsWith("/api/auth/refresh-token")) {
             return chain.filter(exchange);
         }
         try {

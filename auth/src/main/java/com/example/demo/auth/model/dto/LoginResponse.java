@@ -3,9 +3,14 @@ package com.example.demo.auth.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
-public class LoginResponse {
+public class LoginResponse implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String accessToken;  // 访问令牌（用于访问受保护接口）
 

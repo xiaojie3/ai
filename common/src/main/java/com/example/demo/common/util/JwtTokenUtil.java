@@ -12,7 +12,6 @@ import java.time.Instant;
 import java.util.Date;
 
 public class JwtTokenUtil {
-    @Value("${jwt.secret}")
     private String secret = "Quantum7Zebra32Falcon19Jade8Horizon47Vortex23Luna56Phoenix14Onyx78Tiger36Ruby29Eagle51Nebula84Fox17Dragon63Sapphire42Wolf91Iris37Hawk68Aurora25Bear74Emerald59Shark28Opal45Owl72Nova31Lion89Amethyst64Dolphin16Pearl53Raven87Orion49Panther35Topaz76Whale24Garnet61Sparrow93Aether58Leopard48Jasper82Falcon39Coral67Osprey21Vega73Stag52Vitrine94Hippo18Period75Raptor33Zodiac69";
     @Getter
     private long accessTokenExpiration = 900000;

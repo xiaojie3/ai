@@ -12,7 +12,7 @@ public interface FileService {
 
     boolean checkDownloadPermission(String fileId, String userId, List<String> userRoleCodeList);
 
-    void delete(String fileId) throws IOException;
+    void delete(String fileId, String userId) throws IOException;
 
-    void download(String fileId, HttpServletResponse response) throws IOException;
+    void download(String fileId, String userId, HttpServletResponse response) throws IOException;
 }

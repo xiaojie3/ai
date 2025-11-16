@@ -39,6 +39,13 @@ public class GatewayConfig {
                         )
                         .uri("http://localhost:8083")
                 )
+                .route("resources-service-route", r -> r.path("/api/file/**")
+                        .filters(f -> f
+                                .filter(authenticationFilter) // 对业务服务应用认证过滤器
+                                .rewritePath("/api/file/(?<segment>.*)", "/file/${segment}")
+                        )
+                        .uri("http://localhost:8084")
+                )
                 .build();
     }
 }

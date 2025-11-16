@@ -1,6 +1,7 @@
 package com.example.demo.file.service.impl;
 
 import com.example.demo.common.util.JwtTokenUtil;
+import com.example.demo.common.util.MyUtils;
 import com.example.demo.file.model.dto.FileDTO;
 import com.example.demo.file.model.entity.FileDirectoryRole;
 import com.example.demo.file.model.entity.FileMetadata;
@@ -57,6 +58,7 @@ public class FileServiceImpl implements FileService {
 
         // 4. 保存文件元数据
         FileMetadata fileMetadata = new FileMetadata();
+        fileMetadata.setId(MyUtils.getUUID());
         fileMetadata.setFileName(file.getOriginalFilename());
         fileMetadata.setFilePath(filePath);
         fileMetadata.setFileSize(file.getSize());
@@ -93,33 +95,36 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void delete(String fileId) throws IOException {
+    public void delete(String fileId, String userId) throws IOException {
         FileMetadata fileMetadata = fileMetadataRepository.findById(fileId).orElseThrow(() -> {
             String msg = messageSource.getMessage("file.notExists", null, LocaleContextHolder.getLocale());
             return new RuntimeException(msg);
         });
-        fileStorageStrategy.delete(fileMetadata.getFilePath());
+        if(userId.equals(fileMetadata.getUploaderId())) {
+            fileStorageStrategy.delete(fileMetadata.getFilePath());
+        }
     }
 
     /**
      * 文件下载：读取存储系统文件，写入响应流
      */
     @Override
-    public void download(String fileId, HttpServletResponse response) throws IOException {
+    public void download(String fileId, String userId, HttpServletResponse response) throws IOException {
         FileMetadata fileMetadata = fileMetadataRepository.findById(fileId).orElseThrow(() -> {
             String msg = messageSource.getMessage("file.notExists", null, LocaleContextHolder.getLocale());
             return new RuntimeException(msg);
         });
+        if(userId.equals(fileMetadata.getUploaderId())) {
+            // 设置响应头
+            response.setContentType(fileMetadata.getFileType());
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileMetadata.getFileName(), StandardCharsets.UTF_8));
+            response.setContentLengthLong(fileMetadata.getFileSize());
 
-        // 设置响应头
-        response.setContentType(fileMetadata.getFileType());
-        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileMetadata.getFileName(), StandardCharsets.UTF_8));
-        response.setContentLengthLong(fileMetadata.getFileSize());
-
-        // 读取文件并写入响应流
-        try (InputStream inputStream = fileStorageStrategy.download(fileMetadata.getFilePath());
-             OutputStream outputStream = response.getOutputStream()) {
-            IOUtils.copy(inputStream, outputStream);
+            // 读取文件并写入响应流
+            try (InputStream inputStream = fileStorageStrategy.download(fileMetadata.getFilePath());
+                 OutputStream outputStream = response.getOutputStream()) {
+                IOUtils.copy(inputStream, outputStream);
+            }
         }
     }
 

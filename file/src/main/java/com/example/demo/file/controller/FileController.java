@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/file")
 @RequiredArgsConstructor
 public class FileController {
     private final FileService fileService;
@@ -48,26 +48,36 @@ public class FileController {
             @PathVariable("fileId") String fileId,
             @RequestHeader("Authorization") String token,
             HttpServletResponse response) {
-        String account = jwtTokenUtil.getUserIdFromToken(token);
+        String userId = jwtTokenUtil.getUserIdFromToken(token);
         // ToDo: 角色获取
         List<String> userRoleCodes = List.of("admin");
 
         // 权限校验（核心）
-        boolean hasPermission = fileService.checkDownloadPermission(fileId, account, userRoleCodes);
+        boolean hasPermission = fileService.checkDownloadPermission(fileId, userId, userRoleCodes);
         if (!hasPermission) {
             return ApiResult.error(HttpServletResponse.SC_FORBIDDEN, messageSource.getMessage("file.download.notPermission", null, LocaleContextHolder.getLocale()));
         }
 
         // 下载文件
         try {
-            fileService.download(fileId, response);
+            fileService.download(fileId, userId, response);
         } catch (IOException e) {
             return ApiResult.error(HttpServletResponse.SC_FORBIDDEN, messageSource.getMessage("file.download.fail", null, LocaleContextHolder.getLocale()));
         }
         return ApiResult.success(messageSource.getMessage("file.download.success", null, LocaleContextHolder.getLocale()));
     }
 
-    public void deleteFile(String fileId, String token) throws IOException {
-        fileService.delete(fileId);
+    @PostMapping("/delete/{fileId}")
+    public void deleteFile(@PathVariable("fileId") String fileId,@RequestHeader("Authorization") String token) throws IOException {
+        String userId = jwtTokenUtil.getUserIdFromToken(token);
+        fileService.delete(fileId, userId);
+    }
+
+    @GetMapping("/preview/{fileId}")
+    public void previewFile(@PathVariable("fileId") String fileId,
+                            @RequestHeader("Authorization") String token,
+                            HttpServletResponse response) throws IOException {
+        String userId = jwtTokenUtil.getUserIdFromToken(token);
+        fileService.download(fileId, userId, response);
     }
 }
