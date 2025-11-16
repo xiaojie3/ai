@@ -1,7 +1,7 @@
 package com.example.demo.file.service.impl;
 
-import com.example.demo.common.util.JwtTokenUtil;
 import com.example.demo.common.util.MyUtils;
+import com.example.demo.file.model.FileDirectoryEnum;
 import com.example.demo.file.model.dto.FileDTO;
 import com.example.demo.file.model.entity.FileDirectoryRole;
 import com.example.demo.file.model.entity.FileMetadata;
@@ -9,6 +9,7 @@ import com.example.demo.file.repository.FileDirectoryRoleRepository;
 import com.example.demo.file.repository.FileMetadataRepository;
 import com.example.demo.file.service.FileService;
 import com.example.demo.file.strategy.FileStorageStrategy;
+import com.example.demo.file.util.ImageUtils;
 import com.example.demo.file.util.Md5Util;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +19,15 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,7 @@ public class FileServiceImpl implements FileService {
     private final FileStorageStrategy fileStorageStrategy;
     private final FileMetadataRepository fileMetadataRepository;
     private final FileDirectoryRoleRepository fileDirectoryRoleRepository;
+    private final ImageUtils imageUtils;
 
     @Override
     public FileDTO upload(MultipartFile file, String directoryId, String userId) throws IOException {
@@ -125,6 +127,57 @@ public class FileServiceImpl implements FileService {
                  OutputStream outputStream = response.getOutputStream()) {
                 IOUtils.copy(inputStream, outputStream);
             }
+        }
+    }
+
+    @Override
+    public FileDTO uploadAvatar(MultipartFile file, String userId) throws IOException {
+        // 1. 图片合法性校验（尺寸、格式、大小）
+        imageUtils.validateImage(file);
+        // 2. 生成多尺寸头像（200x200、400x400、原图）
+        try (InputStream originalStream = new BufferedInputStream(file.getInputStream())) {
+            Map<String, byte[]> avatarMap = imageUtils.generateAvatarSizes(originalStream);
+
+            // 3. 存储各尺寸头像并保存元数据
+            Map<String, FileDTO> resultMap = new HashMap<>();
+            for (Map.Entry<String, byte[]> entry : avatarMap.entrySet()) {
+                String size = entry.getKey();
+                byte[] imageBytes = entry.getValue();
+
+                // 3.1 计算MD5（防重复）
+                String md5 = Md5Util.calculateMd5(new ByteArrayInputStream(imageBytes));
+                List<FileMetadata> existFileList = fileMetadataRepository.findByMd5(md5);
+                if (!existFileList.isEmpty()) {
+                    return convertToDTO(existFileList.getFirst());
+                }
+
+                // 3.2 构建存储路径（头像目录/用户ID/尺寸/文件名.webp）
+                String fileName = String.format("%s_%s.%s", userId, size, "webp");
+                String relativePath = String.format("%s/%s/%s/%s",
+                        FileDirectoryEnum.AVATAR.getDirName(),
+                        userId,
+                        size,
+                        fileName);
+
+                // 3.3 存储图片
+                String filePath = fileStorageStrategy.upload(file, relativePath);
+
+                // 3.4 保存图片元数据
+                FileMetadata fileMetadata = new FileMetadata();
+                fileMetadata.setId(MyUtils.getUUID());
+                fileMetadata.setFileName(fileName);
+                fileMetadata.setFilePath(filePath);
+                fileMetadata.setFileSize((long) imageBytes.length);
+                fileMetadata.setFileType("image/webp");
+                fileMetadata.setUploaderId(userId);
+                fileMetadata.setDirectoryId(FileDirectoryEnum.AVATAR.getDirName());
+                fileMetadata.setMd5(md5);
+                fileMetadata.setCreateTime(LocalDateTime.now());
+                fileMetadataRepository.save(fileMetadata);
+
+                resultMap.put(size, convertToDTO(fileMetadata));
+            }
+            return resultMap.get("200x200");
         }
     }
 
