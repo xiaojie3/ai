@@ -20,6 +20,7 @@ import java.util.List;
 public class FileController {
     private final FileService fileService;
     private final MessageSource messageSource;
+    private final JwtTokenUtil jwtTokenUtil;
 
     /**
      * 文件上传（需登录）
@@ -32,7 +33,7 @@ public class FileController {
         // 上传文件并保存元数据
         FileDTO fileDTO;
         try {
-            fileDTO = fileService.upload(file, directoryId, JwtTokenUtil.getAccountFromToken(token));
+            fileDTO = fileService.upload(file, directoryId, jwtTokenUtil.getUserIdFromToken(token));
         } catch (IOException e) {
             return ApiResult.error(messageSource.getMessage("file.upload.fail", null, LocaleContextHolder.getLocale()));
         }
@@ -47,7 +48,7 @@ public class FileController {
             @PathVariable("fileId") String fileId,
             @RequestHeader("Authorization") String token,
             HttpServletResponse response) {
-        String account = JwtTokenUtil.getAccountFromToken(token);
+        String account = jwtTokenUtil.getUserIdFromToken(token);
         // ToDo: 角色获取
         List<String> userRoleCodes = List.of("admin");
 

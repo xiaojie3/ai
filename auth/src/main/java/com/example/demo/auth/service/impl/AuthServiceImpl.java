@@ -1,20 +1,22 @@
 package com.example.demo.auth.service.impl;
 
 import com.example.demo.auth.model.dto.LoginResponse;
+import com.example.demo.auth.model.dto.UserInfoDTO;
 import com.example.demo.auth.model.entity.RefreshToken;
 import com.example.demo.auth.model.entity.User;
 import com.example.demo.auth.repository.RefreshTokenRepository;
 import com.example.demo.auth.service.AuthService;
+import com.example.demo.auth.service.RoleService;
 import com.example.demo.auth.service.UserService;
-import com.example.demo.auth.util.JwtTokenUtil;
+import com.example.demo.common.util.JwtTokenUtil;
 import com.example.demo.common.util.MyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,30 +27,31 @@ import java.time.ZoneId;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MessageSource messageSource;
+    private final RoleService roleService;
 
     @Override
     @Transactional
     public LoginResponse login(String account, String password) {
-        // 1. 使用 AuthenticationManager 进行认证
-        // UsernamePasswordAuthenticationToken 是一个包含用户名和密码的认证请求对象
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        account,
-                        password
-                )
-        );
-
-        // 2. 将认证成功的结果存入 SecurityContext
-        // 这一步是可选的，但在某些情况下（如需要在当前线程中获取用户信息）很有用
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // 3. 认证成功后，加载完整的用户信息
         User user = userService.findByAccount(account);
+
+        if (user == null) {
+            throw new UsernameNotFoundException(messageSource.getMessage("login.account.not.exists", null, LocaleContextHolder.getLocale()));
+        }
+
+        boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
+        if (!passwordMatch) {
+            throw new BadCredentialsException(messageSource.getMessage("login.password.error", null, LocaleContextHolder.getLocale()));
+        }
+
+        // 3. 额外校验（可选）：账号状态（禁用、锁定等）
+        if (!user.isEnabled()) {
+            throw new DisabledException(messageSource.getMessage("login.account.locked", null, LocaleContextHolder.getLocale()));
+        }
 
         // 4. 使用 JwtService 生成访问令牌和刷新令牌
         String accessToken = jwtTokenUtil.generateAccessToken(user.getId());
@@ -56,11 +59,11 @@ public class AuthServiceImpl implements AuthService {
 
         // 5. 保存 Refresh Token 到数据库
         // 可以先删除该用户之前所有的 Refresh Token，以实现单点登录
-        refreshTokenRepository.deleteByAccount(user.getUsername());
+        refreshTokenRepository.deleteByAccount(user.getId());
 
         RefreshToken authRefreshToken = new RefreshToken();
         authRefreshToken.setId(MyUtils.getUUID());
-        authRefreshToken.setAccount(user.getUsername());
+        authRefreshToken.setAccount(user.getId());
         authRefreshToken.setRefreshToken(refreshToken);
         // 计算过期时间点 (Instant)
         Instant expirationInstant = Instant.now().plusMillis(jwtTokenUtil.getRefreshTokenExpiration());
@@ -75,6 +78,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public LoginResponse refreshToken(String refreshToken) {
         // 1. 从数据库中查找并验证 Refresh Token
         RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
@@ -95,8 +99,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public void logout(String token) {
-        String account = jwtTokenUtil.getUserIdFromToken(token);
-        refreshTokenRepository.deleteByAccount(account);
+        String userId = jwtTokenUtil.getUserIdFromToken(token);
+        refreshTokenRepository.deleteByAccount(userId);
+    }
+
+    @Override
+    public UserInfoDTO getUserInfo(String token) {
+        String userId = jwtTokenUtil.getUserIdFromToken(token);
+        User user = userService.findById(userId);
+        UserInfoDTO infoDTO = new UserInfoDTO();
+        infoDTO.setId(user.getId());
+        infoDTO.setName(user.getAccount());
+        infoDTO.setRoles(roleService.getRoleCodeListByUserId(userId));
+        return infoDTO;
     }
 }

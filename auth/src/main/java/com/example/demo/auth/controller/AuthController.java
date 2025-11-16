@@ -1,13 +1,15 @@
 package com.example.demo.auth.controller;
 
 import com.example.demo.auth.model.dto.LoginResponse;
-import com.example.demo.auth.model.dto.UserDetailsDto;
+import com.example.demo.auth.model.dto.LoginRequest;
+import com.example.demo.auth.model.dto.UserInfoDTO;
 import com.example.demo.auth.service.AuthService;
 import com.example.demo.common.model.ApiResult;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +24,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login") // 登录接口
-    public ApiResult<LoginResponse> login(@RequestBody UserDetailsDto userDetailsDto) {
-        return ApiResult.success(authService.login(userDetailsDto.getUsername(), userDetailsDto.getPassword()));
+    public ApiResult<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ApiResult.success(authService.login(loginRequest.getAccount(), loginRequest.getPassword()));
     }
 
     @PostMapping("/refresh-token")
@@ -40,5 +42,14 @@ public class AuthController {
         }
         String msg = messageSource.getMessage("logout.success", null, LocaleContextHolder.getLocale());
         return ApiResult.success(null, msg);
+    }
+
+    @PostMapping("/user-info")
+    public ApiResult<UserInfoDTO> getUserInfo(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token != null) {
+            return ApiResult.success(authService.getUserInfo(token));
+        }
+        return ApiResult.error(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
     }
 }

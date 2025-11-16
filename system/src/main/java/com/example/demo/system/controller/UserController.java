@@ -23,13 +23,6 @@ public class UserController {
 
     private final SysUserService service;
 
-    @PostMapping("/info")
-    public UserInfoDTO info() {
-        return new UserInfoDTO("1", "Super", List.of("R_SUPER"), List.of("B_CODE1", "B_CODE3", "B_CODE4"), "136@163.com");
-    }
-
-    public record UserInfoDTO(String id, String name, List<String> roles, List<String> menus, String email) {}
-
     /**
      * 分页查询
      *

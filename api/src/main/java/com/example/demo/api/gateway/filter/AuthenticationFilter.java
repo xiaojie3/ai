@@ -41,7 +41,13 @@ public class AuthenticationFilter implements GatewayFilter {
             return chain.filter(exchange);
         }
         try {
-            String userId = JwtTokenUtil.getAccountFromToken(extractToken(request));
+            JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+            String token = extractToken(request);
+            String userId = new JwtTokenUtil().getUserIdFromToken(token);
+            // 认证令牌是否过期
+            if(!jwtTokenUtil.validateToken(token, userId)) {
+                return onError(exchange);
+            }
             // 创建一个新地请求，将用户信息添加到 Header
             ServerHttpRequest mutatedRequest = request.mutate()
                     .header("X-UserId", userId)
@@ -50,6 +56,7 @@ public class AuthenticationFilter implements GatewayFilter {
             return chain.filter(exchange.mutate().request(mutatedRequest).build());
         } catch (Exception e) {
             // 6. Token 验证失败（过期、签名错误等）
+            e.fillInStackTrace();
             return onError(exchange);
         }
     }

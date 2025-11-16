@@ -1,35 +1,36 @@
 package com.example.demo.auth.config;
 
-import com.alibaba.fastjson2.JSONObject;
-import com.example.demo.auth.filter.JwtTokenFilter;
-import com.example.demo.common.model.ApiResult;
+import com.example.demo.common.util.JwtTokenUtil;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    @Value("${jwt.access-token.expiration}")
+    private long accessTokenExpiration;
 
-    private final JwtTokenFilter jwtTokenFilter;
+    @Value("${jwt.refresh-token.expiration}")
+    private long refreshTokenExpiration;
+
+    @Value("${jwt.secret}")
+    private String secret;
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    public JwtTokenUtil jwtTokenUtil() {
+        return new JwtTokenUtil(secret, accessTokenExpiration, refreshTokenExpiration);
     }
 
     @Bean
@@ -45,22 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll() // 放行api
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyRequest().authenticated()
-                )
-                .exceptionHandling((ex) -> ex.authenticationEntryPoint(authenticationEntryPoint())) // 未登录处理
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
+                );
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return (request, response, authException) -> {
-            response.setContentType("application/json;charset=utf-8");
-            ApiResult<String> result = new ApiResult<>();
-            result.setCode(HttpStatus.FORBIDDEN.value());
-            result.setMsg("请登录！");
-            result.setData(request.getRequestURI());
-            response.getWriter().write(JSONObject.toJSONString(result));
-        };
     }
 }

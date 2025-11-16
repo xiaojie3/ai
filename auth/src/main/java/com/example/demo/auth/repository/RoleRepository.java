@@ -1,7 +1,7 @@
-package com.example.demo.auth.service;
+package com.example.demo.auth.repository;
 
 import java.util.List;
 
-public interface RoleService {
+public interface RoleRepository {
     List<String> getRoleCodeListByUserId(String userId);
 }

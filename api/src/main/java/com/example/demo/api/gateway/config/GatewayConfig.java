@@ -18,7 +18,7 @@ public class GatewayConfig {
                 // ======================== 认证服务路由 ========================
                 .route("auth-service-route", r -> r.path("/api/auth/**") // 1. 匹配所有以 /api/auth/ 开头的请求
                         .filters(f -> f
-                                // 2. (重要) 在这里不要应用 authenticationFilter
+                                .filter(authenticationFilter) // 对业务服务应用认证过滤器
                                 //    因为登录请求本身就是为了获取 Token，此时客户端还没有 Token
                                 .rewritePath("/api/auth/(?<segment>.*)", "/auth/${segment}") // 3. 路径重写，去掉 /api 前缀
                         )

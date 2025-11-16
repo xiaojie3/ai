@@ -1,6 +1,5 @@
 package com.example.demo.auth.repository.impl;
 
-import com.example.demo.auth.model.dto.UserDetailsDto;
 import com.example.demo.auth.model.entity.User;
 import com.example.demo.auth.repository.UserRepository;
 import org.jooq.DSLContext;
