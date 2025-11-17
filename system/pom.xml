@@ -69,7 +69,7 @@
                         </generate>-->
                         <!-- 生成代码的包路径和目录 -->
                         <target>
-                            <packageName>com.example.ai.system.repository.jooq</packageName>
+                            <packageName>com.example.demo.system.repository.jooq</packageName>
                             <directory>src/main/java</directory>
                         </target>
                     </generator>
