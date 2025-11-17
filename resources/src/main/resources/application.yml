@@ -13,7 +13,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    open-in-view: true
+    open-in-view: false
     show-sql: true
     properties:
       hibernate:
@@ -21,7 +21,10 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
 logging:
   level:
-    com.zaxxer: WARN
+    # Hibernate SQL日志：显示参数绑定过程
+    org.hibernate.SQL: DEBUG
+    # Hibernate参数绑定日志：显示具体参数值
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.jooq.tools.LoggerListener: DEBUG
     org.jooq: WARN
 
