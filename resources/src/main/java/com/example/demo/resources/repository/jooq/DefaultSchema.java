@@ -4,7 +4,14 @@
 package com.example.demo.resources.repository.jooq;
 
 
+import com.example.demo.resources.repository.jooq.tables.ResCampus;
+import com.example.demo.resources.repository.jooq.tables.ResCollege;
+import com.example.demo.resources.repository.jooq.tables.ResCourse;
+import com.example.demo.resources.repository.jooq.tables.ResDepartment;
+import com.example.demo.resources.repository.jooq.tables.ResMajor;
+import com.example.demo.resources.repository.jooq.tables.ResQuarter;
 import com.example.demo.resources.repository.jooq.tables.ResSchool;
+import com.example.demo.resources.repository.jooq.tables.ResSemester;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +36,44 @@ public class DefaultSchema extends SchemaImpl {
     public static final DefaultSchema DEFAULT_SCHEMA = new DefaultSchema();
 
     /**
+     * 校区表
+     */
+    public final ResCampus RES_CAMPUS = ResCampus.RES_CAMPUS;
+
+    /**
+     * 学院表
+     */
+    public final ResCollege RES_COLLEGE = ResCollege.RES_COLLEGE;
+
+    /**
+     * 课程表
+     */
+    public final ResCourse RES_COURSE = ResCourse.RES_COURSE;
+
+    /**
+     * 部门表
+     */
+    public final ResDepartment RES_DEPARTMENT = ResDepartment.RES_DEPARTMENT;
+
+    /**
+     * 专业表
+     */
+    public final ResMajor RES_MAJOR = ResMajor.RES_MAJOR;
+
+    /**
+     * 学季字典表
+     */
+    public final ResQuarter RES_QUARTER = ResQuarter.RES_QUARTER;
+
+    /**
      * 学校表
      */
     public final ResSchool RES_SCHOOL = ResSchool.RES_SCHOOL;
+
+    /**
+     * 学期表
+     */
+    public final ResSemester RES_SEMESTER = ResSemester.RES_SEMESTER;
 
     /**
      * No further instances allowed
@@ -49,7 +91,14 @@ public class DefaultSchema extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            ResSchool.RES_SCHOOL
+            ResCampus.RES_CAMPUS,
+            ResCollege.RES_COLLEGE,
+            ResCourse.RES_COURSE,
+            ResDepartment.RES_DEPARTMENT,
+            ResMajor.RES_MAJOR,
+            ResQuarter.RES_QUARTER,
+            ResSchool.RES_SCHOOL,
+            ResSemester.RES_SEMESTER
         );
     }
 }

@@ -3,12 +3,12 @@ package com.example.demo.resources.service.impl;
 import com.example.demo.common.context.UserContextHolder;
 import com.example.demo.common.model.PageResult;
 import com.example.demo.common.util.MyUtils;
-import com.example.demo.resources.model.dto.SchoolDTO;
-import com.example.demo.resources.model.dto.SchoolQueryDTO;
-import com.example.demo.resources.model.dto.SchoolSaveDTO;
-import com.example.demo.resources.model.entity.School;
-import com.example.demo.resources.repository.SchoolRepository;
-import com.example.demo.resources.service.SchoolService;
+import com.example.demo.resources.model.dto.CampusDTO;
+import com.example.demo.resources.model.dto.CampusQueryDTO;
+import com.example.demo.resources.model.dto.CampusSaveDTO;
+import com.example.demo.resources.model.entity.Campus;
+import com.example.demo.resources.repository.CampusRepository;
+import com.example.demo.resources.service.CampusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,32 +20,32 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class SchoolServiceImpl implements SchoolService {
-    private final SchoolRepository repository;
+public class CampusServiceImpl implements CampusService {
+    private final CampusRepository repository;
 
     @Override
-    public PageResult<SchoolDTO> queryByPage(@RequestBody SchoolQueryDTO queryDTO) {
+    public PageResult<CampusDTO> queryByPage(@RequestBody CampusQueryDTO queryDTO) {
         return repository.queryByPage(queryDTO);
     }
 
     @Override
-    public List<SchoolDTO> list() {
+    public List<CampusDTO> list() {
         return repository.list();
     }
 
     @Override
-    public List<SchoolDTO> list(SchoolQueryDTO queryDTO) {
+    public List<CampusDTO> list(CampusQueryDTO queryDTO) {
         return repository.list();
     }
 
     @Override
-    public SchoolDTO FindById(String id) {
+    public CampusDTO FindById(String id) {
         return repository.FindById(id);
     }
 
     @Override
-    public void save(SchoolSaveDTO saveDTO) {
-        School entity = MyUtils.copyObject(saveDTO, School.class);
+    public void save(CampusSaveDTO saveDTO) {
+        Campus entity = MyUtils.copyObject(saveDTO, Campus.class);
         entity.setId(MyUtils.getUUID());
         entity.setCreateBy(UserContextHolder.getUserId());
         entity.setCreateTime(LocalDateTime.now());
@@ -53,16 +53,16 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public void update(SchoolSaveDTO saveDTO) {
-        School entity = MyUtils.copyObject(saveDTO, School.class);
+    public void update(CampusSaveDTO saveDTO) {
+        Campus entity = MyUtils.copyObject(saveDTO, Campus.class);
         entity.setUpdateBy(UserContextHolder.getUserId());
         entity.setUpdateTime(LocalDateTime.now());
         repository.save(entity);
     }
 
     @Override
-    public void updateNotNll(SchoolSaveDTO saveDTO) {
-        School entity = repository.FindByIdEntity(saveDTO.getId());
+    public void updateNotNll(CampusSaveDTO saveDTO) {
+        Campus entity = repository.getById(saveDTO.getId());
         MyUtils.copyObject(saveDTO, entity, false);
         entity.setUpdateBy(UserContextHolder.getUserId());
         entity.setUpdateTime(LocalDateTime.now());

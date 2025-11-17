@@ -16,6 +16,8 @@ public interface SchoolRepository {
 
     SchoolDTO FindById(String id);
 
+    School FindByIdEntity(String id);
+
     void save(School entity);
 
     void deleteById(String id);

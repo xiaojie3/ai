@@ -38,10 +38,17 @@ public class SchoolRepositoryImpl extends BaseJooqRepository implements SchoolRe
         return super.list(queryDTO, SchoolDTO.class);
     }
 
-    @Override
-    public SchoolDTO FindById(String id) {
+    @Override    // 标注此方法重写了父类的方法
+    public SchoolDTO FindById(String id) {    // 根据ID查找学校信息并返回SchoolDTO对象
+        // 使用构建器模式创建查询条件，根据传入的id进行查询
         List<SchoolDTO> list = this.list(SchoolQueryDTO.builder().id(id).build());
+        // 判断查询结果列表是否为空，若为空则返回null，否则返回列表中的第一个元素
         return list.isEmpty() ? null : list.getFirst();
+    }
+
+    @Override
+    public School FindByIdEntity(String id) {
+        return jpaRepository.getReferenceById(id);
     }
 
     @Override

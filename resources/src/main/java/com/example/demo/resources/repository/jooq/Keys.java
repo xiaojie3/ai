@@ -4,8 +4,22 @@
 package com.example.demo.resources.repository.jooq;
 
 
+import com.example.demo.resources.repository.jooq.tables.ResCampus;
+import com.example.demo.resources.repository.jooq.tables.ResCollege;
+import com.example.demo.resources.repository.jooq.tables.ResCourse;
+import com.example.demo.resources.repository.jooq.tables.ResDepartment;
+import com.example.demo.resources.repository.jooq.tables.ResMajor;
+import com.example.demo.resources.repository.jooq.tables.ResQuarter;
 import com.example.demo.resources.repository.jooq.tables.ResSchool;
+import com.example.demo.resources.repository.jooq.tables.ResSemester;
+import com.example.demo.resources.repository.jooq.tables.records.ResCampusRecord;
+import com.example.demo.resources.repository.jooq.tables.records.ResCollegeRecord;
+import com.example.demo.resources.repository.jooq.tables.records.ResCourseRecord;
+import com.example.demo.resources.repository.jooq.tables.records.ResDepartmentRecord;
+import com.example.demo.resources.repository.jooq.tables.records.ResMajorRecord;
+import com.example.demo.resources.repository.jooq.tables.records.ResQuarterRecord;
 import com.example.demo.resources.repository.jooq.tables.records.ResSchoolRecord;
+import com.example.demo.resources.repository.jooq.tables.records.ResSemesterRecord;
 
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -24,5 +38,13 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<ResCampusRecord> KEY_RES_CAMPUS_PRIMARY = Internal.createUniqueKey(ResCampus.RES_CAMPUS, DSL.name("KEY_res_campus_PRIMARY"), new TableField[] { ResCampus.RES_CAMPUS.ID }, true);
+    public static final UniqueKey<ResCollegeRecord> KEY_RES_COLLEGE_PRIMARY = Internal.createUniqueKey(ResCollege.RES_COLLEGE, DSL.name("KEY_res_college_PRIMARY"), new TableField[] { ResCollege.RES_COLLEGE.ID }, true);
+    public static final UniqueKey<ResCourseRecord> KEY_RES_COURSE_PRIMARY = Internal.createUniqueKey(ResCourse.RES_COURSE, DSL.name("KEY_res_course_PRIMARY"), new TableField[] { ResCourse.RES_COURSE.ID }, true);
+    public static final UniqueKey<ResCourseRecord> KEY_RES_COURSE_UK_COURSE_CODE = Internal.createUniqueKey(ResCourse.RES_COURSE, DSL.name("KEY_res_course_uk_course_code"), new TableField[] { ResCourse.RES_COURSE.COURSE_CODE }, true);
+    public static final UniqueKey<ResDepartmentRecord> KEY_RES_DEPARTMENT_PRIMARY = Internal.createUniqueKey(ResDepartment.RES_DEPARTMENT, DSL.name("KEY_res_department_PRIMARY"), new TableField[] { ResDepartment.RES_DEPARTMENT.ID }, true);
+    public static final UniqueKey<ResMajorRecord> KEY_RES_MAJOR_PRIMARY = Internal.createUniqueKey(ResMajor.RES_MAJOR, DSL.name("KEY_res_major_PRIMARY"), new TableField[] { ResMajor.RES_MAJOR.ID }, true);
+    public static final UniqueKey<ResQuarterRecord> KEY_RES_QUARTER_PRIMARY = Internal.createUniqueKey(ResQuarter.RES_QUARTER, DSL.name("KEY_res_quarter_PRIMARY"), new TableField[] { ResQuarter.RES_QUARTER.ID }, true);
     public static final UniqueKey<ResSchoolRecord> KEY_RES_SCHOOL_PRIMARY = Internal.createUniqueKey(ResSchool.RES_SCHOOL, DSL.name("KEY_res_school_PRIMARY"), new TableField[] { ResSchool.RES_SCHOOL.ID }, true);
+    public static final UniqueKey<ResSemesterRecord> KEY_RES_SEMESTER_PRIMARY = Internal.createUniqueKey(ResSemester.RES_SEMESTER, DSL.name("KEY_res_semester_PRIMARY"), new TableField[] { ResSemester.RES_SEMESTER.ID }, true);
 }
