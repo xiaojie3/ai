@@ -5,7 +5,6 @@ import com.example.demo.resources.model.dto.DepartmentBatchUpdateDTO;
 import com.example.demo.resources.model.dto.DepartmentDTO;
 import com.example.demo.resources.model.dto.DepartmentQueryDTO;
 import com.example.demo.resources.model.dto.DepartmentSaveDTO;
-import com.example.demo.resources.model.entity.Department;
 
 import java.util.List;
 
