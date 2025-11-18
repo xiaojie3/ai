@@ -66,7 +66,8 @@ public class CampusRepositoryImpl extends BaseJooqRepository implements CampusRe
 
     @Override
     protected SelectJoinStep<?> createFrom(SelectSelectStep<?> sqlSelect) {
-        return dsl.select().from(Tables.RES_CAMPUS);
+        return sqlSelect.from(Tables.RES_CAMPUS)
+                .leftJoin(Tables.RES_SCHOOL).on(Tables.RES_CAMPUS.SCHOOL_ID.eq(Tables.RES_SCHOOL.ID));
     }
 
     @Override

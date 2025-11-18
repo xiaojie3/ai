@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/resource/school")
 @RequiredArgsConstructor
-@Tag(name = "学校表")
+@Tag(name = "学校")
 public class SchoolController {
 
     private final SchoolService service;

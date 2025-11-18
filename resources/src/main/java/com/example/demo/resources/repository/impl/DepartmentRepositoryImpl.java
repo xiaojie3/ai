@@ -71,7 +71,7 @@ public class DepartmentRepositoryImpl extends BaseJooqRepository implements Depa
 
     @Override
     protected SelectJoinStep<?> createFrom(SelectSelectStep<?> sqlSelect) {
-        return dsl.select().from(Tables.RES_DEPARTMENT);
+        return sqlSelect.from(Tables.RES_DEPARTMENT);
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/resource/department")
 @RequiredArgsConstructor
-@Tag(name = "部门表")
+@Tag(name = "部门")
 public class DepartmentController {
 
     private final DepartmentService service;

@@ -68,7 +68,7 @@ public class SchoolRepositoryImpl extends BaseJooqRepository implements SchoolRe
 
     @Override
     protected SelectJoinStep<?> createFrom(SelectSelectStep<?> sqlSelect) {
-        return dsl.select().from(Tables.RES_SCHOOL);
+        return sqlSelect.from(Tables.RES_SCHOOL);
     }
 
     @Override

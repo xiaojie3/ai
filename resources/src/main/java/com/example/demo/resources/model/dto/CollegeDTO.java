@@ -2,37 +2,30 @@ package com.example.demo.resources.model.dto;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.common.annotation.FieldMapping;
-import com.example.demo.resources.repository.jooq.Tables;
-import com.example.demo.resources.repository.jooq.tables.ResSchool;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Data
-public class CampusDTO {
+public class CollegeDTO {
     private String id;
 
     // ${column.comment}
-    private String campusCode;
+    private String collegeCode;
 
     // ${column.comment}
-    private String schoolId;
+    private String campusId;
 
     // ${column.comment}
-    @FieldMapping(value = "res_school.school_name")
-    private String schoolName;
+    private String collegeName;
 
     // ${column.comment}
-    private String campusName;
+    private String collegeAbbr;
 
     // ${column.comment}
     private String englishName;
 
     // ${column.comment}
-    private String address;
-
-    // ${column.comment}
-    private String principal;
+    private String dean;
 
     // ${column.comment}
     private String landline;
@@ -45,6 +38,12 @@ public class CampusDTO {
 
     // ${column.comment}
     private String intro;
+
+    // ${column.comment}
+    private String campusName;
+
+    // ${column.comment}
+    private String chineseAbbr;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

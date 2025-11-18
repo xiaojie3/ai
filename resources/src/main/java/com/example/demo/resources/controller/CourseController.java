@@ -3,7 +3,7 @@ package com.example.demo.resources.controller;
 import com.example.demo.common.model.ApiResult;
 import com.example.demo.common.model.PageResult;
 import com.example.demo.resources.model.dto.*;
-import com.example.demo.resources.service.CampusService;
+import com.example.demo.resources.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/resource/campus")
+@RequestMapping("/resource/course")
 @RequiredArgsConstructor
-@Tag(name = "校区")
-public class CampusController {
+@Tag(name = "课程")
+public class CourseController {
 
-    private final CampusService service;
+    private final CourseService service;
 
     /**
      * 分页查询
@@ -28,7 +28,7 @@ public class CampusController {
      */
     @PostMapping("/query")
     @Operation(summary = "分页查询")
-    public ResponseEntity<ApiResult<PageResult<CampusDTO>>> queryByPage(@RequestBody CampusQueryDTO queryDTO) {
+    public ResponseEntity<ApiResult<PageResult<CourseDTO>>> queryByPage(@RequestBody CourseQueryDTO queryDTO) {
         return ResponseEntity.ok(ApiResult.success(this.service.queryByPage(queryDTO)));
     }
 
@@ -40,7 +40,7 @@ public class CampusController {
      */
     @PostMapping("/list")
     @Operation(summary = "列表查询")
-    public ResponseEntity<ApiResult<List<CampusDTO>>> queryByList(@RequestBody CampusQueryDTO queryDTO) {
+    public ResponseEntity<ApiResult<List<CourseDTO>>> queryByList(@RequestBody CourseQueryDTO queryDTO) {
         return ResponseEntity.ok(ApiResult.success(this.service.list(queryDTO)));
     }
 
@@ -50,9 +50,9 @@ public class CampusController {
      * @param id 主键
      * @return 单条数据
      */
-    @PostMapping("/find")
+    @GetMapping("/{id}")
     @Operation(summary = "ID查询")
-    public ResponseEntity<ApiResult<CampusDTO>> queryById(String id) {
+    public ResponseEntity<ApiResult<CourseDTO>> queryById(@PathVariable("id") String id) {
         return ResponseEntity.ok(ApiResult.success(this.service.FindById(id)));
     }
 
@@ -64,7 +64,7 @@ public class CampusController {
      */
     @PostMapping("/add")
     @Operation(summary = "新增")
-    public ResponseEntity<ApiResult<CampusSaveDTO>> add(@RequestBody CampusSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<CourseSaveDTO>> add(@RequestBody CourseSaveDTO saveDTO) {
         this.service.save(saveDTO);
         return ResponseEntity.ok(ApiResult.success(saveDTO));
     }
@@ -77,22 +77,21 @@ public class CampusController {
      */
     @PostMapping("/edit")
     @Operation(summary = "编辑")
-    public ResponseEntity<ApiResult<CampusSaveDTO>> edit(@RequestBody CampusSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<CourseSaveDTO>> edit(@RequestBody CourseSaveDTO saveDTO) {
         this.service.update(saveDTO);
         return ResponseEntity.ok(ApiResult.success(saveDTO));
     }
 
     /**
-     * 编辑数据
+     * 批量编辑数据
      *
-     * @param saveDTO 实体
-     * @return 编辑结果
+     * @param batchUpdateDTO 实体
+     * @return 批量编辑数量
      */
     @PostMapping("/batchEdit")
     @Operation(summary = "批量编辑")
-    public ResponseEntity<ApiResult<CampusSaveDTO>> batchEdit(@RequestBody CampusSaveDTO saveDTO) {
-        this.service.updateNotNll(saveDTO);
-        return ResponseEntity.ok(ApiResult.success(saveDTO));
+    public ResponseEntity<ApiResult<Integer>> batchEdit(@RequestBody CourseBatchUpdateDTO batchUpdateDTO) {
+        return ResponseEntity.ok(ApiResult.success(this.service.batchUpdate(batchUpdateDTO)));
     }
 
     /**
@@ -121,5 +120,4 @@ public class CampusController {
         return ResponseEntity.ok(ApiResult.success(ids.size()));
     }
 }
-
 
