@@ -1,7 +1,5 @@
 package com.example.demo.resources.model.dto;
 
-import java.time.LocalDateTime;
-
 import lombok.Data;
 
 @Data

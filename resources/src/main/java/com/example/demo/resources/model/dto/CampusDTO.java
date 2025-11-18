@@ -1,12 +1,10 @@
 package com.example.demo.resources.model.dto;
 
-import java.time.LocalDateTime;
-
 import com.example.demo.common.annotation.FieldMapping;
-import com.example.demo.resources.repository.jooq.Tables;
-import com.example.demo.resources.repository.jooq.tables.ResSchool;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class CampusDTO {

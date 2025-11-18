@@ -1,7 +1,5 @@
 package com.example.demo.resources.model.dto;
 
-import java.time.LocalDateTime;
-
 import com.example.demo.common.model.PageParams;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
