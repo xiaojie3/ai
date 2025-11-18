@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-    @RequestMapping("/system/user")
+@RequestMapping("/system/user")
 @RequiredArgsConstructor
 @Tag(name = "用户信息表")
 public class UserController {

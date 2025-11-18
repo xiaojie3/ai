@@ -11,7 +11,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new UserIdInterceptor())
-                .addPathPatterns("/**"); // 对所有请求生效
+                .addPathPatterns("/resources/**"); // 对所有请求生效
         // .excludePathPatterns("/login", "/register"); // 可以排除一些公开接口
     }
 }

@@ -79,4 +79,3 @@ public class DepartmentRepositoryImpl extends BaseJooqRepository implements Depa
         return Tables.RES_DEPARTMENT;
     }
 }
-

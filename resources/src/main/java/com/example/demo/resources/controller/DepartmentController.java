@@ -40,7 +40,7 @@ public class DepartmentController {
      */
     @PostMapping("/list")
     @Operation(summary = "列表查询")
-    public ResponseEntity<ApiResult<List<DepartmentDTO>>> queryByList(DepartmentQueryDTO queryDTO) {
+    public ResponseEntity<ApiResult<List<DepartmentDTO>>> queryByList(@RequestBody DepartmentQueryDTO queryDTO) {
         return ResponseEntity.ok(ApiResult.success(this.service.list(queryDTO)));
     }
 
@@ -89,7 +89,7 @@ public class DepartmentController {
      * @return 批量编辑数量
      */
     @PostMapping("/batchEdit")
-    @Operation(summary = "编辑非空参数")
+    @Operation(summary = "批量编辑")
     public ResponseEntity<ApiResult<Integer>> batchEdit(@RequestBody DepartmentBatchUpdateDTO batchUpdateDTO) {
         return ResponseEntity.ok(ApiResult.success(this.service.batchUpdate(batchUpdateDTO)));
     }

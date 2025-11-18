@@ -38,9 +38,9 @@ public class CampusController {
      * @param queryDTO 筛选条件
      * @return 查询结果
      */
-    @GetMapping()
+    @PostMapping("/list")
     @Operation(summary = "列表查询")
-    public ResponseEntity<ApiResult<List<CampusDTO>>> queryByList(CampusQueryDTO queryDTO) {
+    public ResponseEntity<ApiResult<List<CampusDTO>>> queryByList(@RequestBody CampusQueryDTO queryDTO) {
         return ResponseEntity.ok(ApiResult.success(this.service.list(queryDTO)));
     }
 
@@ -50,9 +50,9 @@ public class CampusController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("/{id}")
+    @PostMapping("/find")
     @Operation(summary = "ID查询")
-    public ResponseEntity<ApiResult<CampusDTO>> queryById(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResult<CampusDTO>> queryById(String id) {
         return ResponseEntity.ok(ApiResult.success(this.service.FindById(id)));
     }
 
@@ -62,9 +62,9 @@ public class CampusController {
      * @param saveDTO 实体
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/add")
     @Operation(summary = "新增")
-    public ResponseEntity<ApiResult<CampusSaveDTO>> add(CampusSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<CampusSaveDTO>> add(@RequestBody CampusSaveDTO saveDTO) {
         this.service.save(saveDTO);
         return ResponseEntity.ok(ApiResult.success(saveDTO));
     }
@@ -75,9 +75,9 @@ public class CampusController {
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping
+    @PostMapping("/edit")
     @Operation(summary = "编辑")
-    public ResponseEntity<ApiResult<CampusSaveDTO>> edit(CampusSaveDTO saveDTO) {
+    public ResponseEntity<ApiResult<CampusSaveDTO>> edit(@RequestBody CampusSaveDTO saveDTO) {
         this.service.update(saveDTO);
         return ResponseEntity.ok(ApiResult.success(saveDTO));
     }
@@ -88,9 +88,9 @@ public class CampusController {
      * @param saveDTO 实体
      * @return 编辑结果
      */
-    @PutMapping("/notNull")
-    @Operation(summary = "编辑非空参数")
-    public ResponseEntity<ApiResult<CampusSaveDTO>> editByNotNull(CampusSaveDTO saveDTO) {
+    @PostMapping("/batchEdit")
+    @Operation(summary = "批量编辑")
+    public ResponseEntity<ApiResult<CampusSaveDTO>> batchEdit(@RequestBody CampusSaveDTO saveDTO) {
         this.service.updateNotNll(saveDTO);
         return ResponseEntity.ok(ApiResult.success(saveDTO));
     }
@@ -101,9 +101,9 @@ public class CampusController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @Operation(summary = "删除")
-    public ResponseEntity<ApiResult<Void>> deleteById(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResult<Void>> deleteById(String id) {
         this.service.deleteById(id);
         return ResponseEntity.ok(ApiResult.success(null));
     }
@@ -114,9 +114,9 @@ public class CampusController {
      * @param ids 主键列表
      * @return 删除数量
      */
-    @DeleteMapping
+    @PostMapping("/batchDelete")
     @Operation(summary = "批量删除")
-    public ResponseEntity<ApiResult<Integer>> deleteByIds(List<String> ids) {
+    public ResponseEntity<ApiResult<Integer>> deleteByIds(@RequestBody List<String> ids) {
         this.service.deleteByIds(ids);
         return ResponseEntity.ok(ApiResult.success(ids.size()));
     }

@@ -4,7 +4,6 @@ import com.example.demo.common.model.PageResult;
 import com.example.demo.resources.model.dto.CampusDTO;
 import com.example.demo.resources.model.dto.CampusQueryDTO;
 import com.example.demo.resources.model.dto.CampusSaveDTO;
-import com.example.demo.resources.model.entity.Campus;
 
 import java.util.List;
 
