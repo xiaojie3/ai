@@ -37,6 +37,7 @@ create table res_school
     create_time          datetime      not null comment '创建时间',
     update_by            varchar(64)   null comment '更新人',
     update_time          datetime      null comment '更新时间'
-) comment '学校表';
+)
+    comment '学校表';
 
-INSERT INTO res_school (id, school_code, school_name, school_abbr, english_name, english_abbr, key_school, org_structure, project_211, province, city, online_dept, anniversary_date, competent_dept, graduate_school, school_type, school_nature, adult_edu_dept, party_secretary, discipline_count, legal_representative, legal_cert_no, sponsor, principal, establish_date, homepage_url, fax, postal_code, contact_phone, email, address, intro, create_by, create_time, update_by, update_time) VALUES ('1', '00000', '测试大学', '测试', 'Test University', 'TU', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '测试', null, 'admin', '2025-10-30 17:10:45', null, '2025-11-06 18:18:40');
+INSERT INTO demo.res_school (id, school_code, school_name, school_abbr, english_name, english_abbr, key_school, org_structure, project_211, province, city, online_dept, anniversary_date, competent_dept, graduate_school, school_type, school_nature, adult_edu_dept, party_secretary, discipline_count, legal_representative, legal_cert_no, sponsor, principal, establish_date, homepage_url, fax, postal_code, contact_phone, email, address, intro, create_by, create_time, update_by, update_time) VALUES ('1', '00000', '测试大学', '测试', 'Test University', 'TU', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '测试', null, 'admin', '2025-10-30 17:10:45', null, '2025-11-06 18:18:40');
