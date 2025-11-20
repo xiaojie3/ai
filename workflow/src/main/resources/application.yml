@@ -1,0 +1,17 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: workflow
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo
+    username: demo
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jooq:
+    sql-dialect: mysql
+flowable:
+  # 表初始化策略：true=不存在则创建（开发环境），false=不创建（生产环境）
+  database-schema-update: true
+  # 历史级别：full=记录所有历史（推荐，支持审计），none=不记录
+  history-level: full

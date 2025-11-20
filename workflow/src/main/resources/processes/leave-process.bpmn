@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd http://flowable.org/bpmn http://flowable.org/schema/bpmn/flowable-bpmn.xsd"
+             id="Definitions_1"
+             targetNamespace="http://flowable.org/bpmn">
+
+    <!-- 请假流程：开始 → 排他网关（判断天数）→ 部门经理/总经理审批 → 结束 -->
+    <process id="leaveProcess" name="请假流程" isExecutable="true">
+        <!-- 开始事件 -->
+        <startEvent id="startEvent1" />
+
+        <!-- 排他网关：判断请假天数 -->
+        <exclusiveGateway id="gateway_days" name="请假天数判断" />
+
+        <!-- 部门经理审批（请假≤3天，动态分配审批人） -->
+        <userTask id="task_deptManager" name="部门经理审批" flowable:assignee="#{approveAssignUtil.getDirectLeader(applicant)}" />
+
+        <!-- 总经理审批（请假>3天，动态分配审批人） -->
+        <userTask id="task_gmManager" name="总经理审批" flowable:assignee="#{approveAssignUtil.getGmManager()}" />
+
+        <!-- 结束事件 -->
+        <endEvent id="endEvent1" />
+
+        <!-- 流转线配置 -->
+        <sequenceFlow id="flow_start_to_gateway" sourceRef="startEvent1" targetRef="gateway_days" />
+
+        <!-- 流转线1：天数≤3 → 部门经理审批 -->
+        <sequenceFlow id="flow_dept" sourceRef="gateway_days" targetRef="task_deptManager">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days <= 3}]]></conditionExpression>
+        </sequenceFlow>
+
+        <!-- 流转线2：天数>3 → 总经理审批 -->
+        <sequenceFlow id="flow_gm" sourceRef="gateway_days" targetRef="task_gmManager">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days > 3}]]></conditionExpression>
+        </sequenceFlow>
+
+        <!-- 审批完成 → 结束 -->
+        <sequenceFlow id="flow_dept_to_end" sourceRef="task_deptManager" targetRef="endEvent1" />
+        <sequenceFlow id="flow_gm_to_end" sourceRef="task_gmManager" targetRef="endEvent1" />
+    </process>
+</definitions>
