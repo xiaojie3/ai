@@ -1,4 +1,4 @@
-package com.example.demo.common.interceptor;
+package com.example.demo.resources.interceptor;
 
 import com.example.demo.common.context.UserContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,12 +36,12 @@ public class UserIdInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, ModelAndView modelAndView) {
         // 视图渲染之后执行，这里通常不需要操作
     }
 
     @Override
-    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, Exception ex) throws Exception {
+    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler, Exception ex) {
         // 请求完成后（无论成功或失败），清除 ThreadLocal，防止内存泄漏
         UserContextHolder.clear();
         logger.debug("Cleared UserContextHolder for request.");

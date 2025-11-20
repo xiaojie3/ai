@@ -24,6 +24,7 @@
 		<module>system</module><!--系统管理-->
 		<module>file</module><!--文件管理-->
 		<module>resources</module><!--资源管理-->
+		<module>workflow</module><!--工作流管理-->
 	</modules>
 
 	<properties>

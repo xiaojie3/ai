@@ -1,6 +1,6 @@
 package com.example.demo.resources.config;
 
-import com.example.demo.common.interceptor.UserIdInterceptor;
+import com.example.demo.resources.interceptor.UserIdInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

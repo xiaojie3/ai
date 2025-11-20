@@ -20,8 +20,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResult<String>> handleUnauthorizedException(Exception ex, HttpServletRequest request) {
         return new ResponseEntity<>(new ApiResult<>(
                 HttpStatus.UNAUTHORIZED.value(),
-                ex.getMessage(), // 使用异常自带的消息
-                request.getRequestURI()
+                request.getRequestURI(),
+                ex.getMessage()
         ), HttpStatus.UNAUTHORIZED);
     }
 
@@ -33,8 +33,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResult<String>> handleAccessDeniedException(AccessDeniedException ex, HttpServletRequest request) {
         ApiResult<String> error = new ApiResult<>(
                 HttpStatus.FORBIDDEN.value(),
-                ex.getMessage(),
-                request.getRequestURI()
+                request.getRequestURI(),
+                ex.getMessage()
         );
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
@@ -46,8 +46,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResult<String>> handleAllExceptions(Exception ex, HttpServletRequest request) {
         ApiResult<String> error = new ApiResult<>(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage(),
-                request.getRequestURI()
+                request.getRequestURI(),
+                ex.getMessage()
         );
         // 在开发环境，可以打印出详细的错误堆栈信息
         ex.fillInStackTrace();
