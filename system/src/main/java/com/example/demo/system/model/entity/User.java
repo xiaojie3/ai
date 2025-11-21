@@ -1,12 +1,21 @@
-package com.example.demo.system.model.dto;
+package com.example.demo.system.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.demo.system.model.enums.UserStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * 用户表
+ *
+ * @author xieJ
+ * @since 2025-11-08 23:46:49
+ */
 @Data
-public class SysUserDTO {
+@TableName("`sys_user`")
+public class User {
     private String id;
 
     // 账号
@@ -15,25 +24,23 @@ public class SysUserDTO {
     // 名称
     private String username;
 
+    // 密码
+    private String password;
+
     // 邮箱
     private String email;
 
     // 性别码
     private String genderCode;
 
-    // 性别码
-    private String genderName;
-
     // 手机号码
     private String phone;
 
     // 状态码
-    private String userStatusCode;
+    private UserStatus userStatusCode;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     private String createBy;

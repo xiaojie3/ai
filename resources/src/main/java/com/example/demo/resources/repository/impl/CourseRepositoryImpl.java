@@ -1,6 +1,5 @@
 package com.example.demo.resources.repository.impl;
 
-import com.example.demo.common.model.BaseJooqRepository;
 import com.example.demo.common.model.PageResult;
 import com.example.demo.resources.model.dto.CourseDTO;
 import com.example.demo.resources.model.dto.CourseQueryDTO;

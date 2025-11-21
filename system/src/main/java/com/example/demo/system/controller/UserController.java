@@ -1,13 +1,20 @@
 package com.example.demo.system.controller;
 
-import com.example.demo.common.model.PageResult;
-import com.example.demo.system.model.dto.SysUserDTO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.system.model.dto.SysUserQueryDTO;
 import com.example.demo.system.model.dto.SysUserSaveDTO;
-import com.example.demo.system.service.SysUserService;
+import com.example.demo.system.model.dto.UserDTO;
+import com.example.demo.system.model.entity.User;
+import com.example.demo.system.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +28,7 @@ import java.util.List;
 @Tag(name = "用户信息表")
 public class UserController {
 
-    private final SysUserService service;
+    private final UserService service;
 
     /**
      * 分页查询
@@ -31,8 +38,32 @@ public class UserController {
      */
     @PostMapping("/query")
     @Operation(summary = "分页查询")
-    public PageResult<SysUserDTO> queryByPage(@RequestBody SysUserQueryDTO queryDTO) {
-        return service.queryByPage(queryDTO);
+    public IPage<UserDTO> queryByPage(@RequestBody SysUserQueryDTO queryDTO) {
+        // 创建分页参数，并指定排序
+        Page<User> page = new Page<>(1, 20); // 查第1页，每页20条
+        page.addOrder(OrderItem.desc("create_time")); // 按创建时间倒序
+
+
+        LambdaQueryWrapper<User> wrappers = Wrappers.lambdaQuery();
+
+        if(StringUtils.isNotBlank(queryDTO.getId())) {
+            wrappers.eq(User::getId, queryDTO.getId());
+        }
+        if(StringUtils.isNotBlank(queryDTO.getAccount())) {
+            wrappers.like(User::getAccount, queryDTO.getAccount());
+        }
+        if(StringUtils.isNotBlank(queryDTO.getUsername())) {
+            wrappers.like(User::getUsername, queryDTO.getUsername());
+        }
+        // 执行分页查询
+        Page<User> userPage = service.page(page, wrappers);
+
+        return userPage.convert(user -> {
+            UserDTO dto = new UserDTO();
+            BeanUtils.copyProperties(user, dto); // 使用 Spring 的工具类
+            // 或者用 MapStruct 等更专业的工具
+            return dto;
+        });
     }
 
     /**
@@ -43,8 +74,8 @@ public class UserController {
      */
     @PostMapping("/list")
     @Operation(summary = "列表查询")
-    public List<SysUserDTO> queryByList(SysUserQueryDTO queryDTO) {
-        return service.list(queryDTO);
+    public List<UserDTO> queryByList(SysUserQueryDTO queryDTO) {
+        return null;
     }
 
     /**
@@ -55,8 +86,8 @@ public class UserController {
      */
     @PostMapping("/find")
     @Operation(summary = "ID查询")
-    public SysUserDTO queryById(String id) {
-        return service.FindById(id);
+    public UserDTO queryById(String id) {
+        return null;
     }
 
     /**
@@ -68,7 +99,6 @@ public class UserController {
     @PostMapping
     @Operation(summary = "新增")
     public SysUserSaveDTO add(@RequestBody SysUserSaveDTO saveDTO) {
-        service.save(saveDTO);
         return saveDTO;
     }
 
@@ -81,7 +111,6 @@ public class UserController {
     @PostMapping("/edit")
     @Operation(summary = "编辑")
     public SysUserSaveDTO edit(@RequestBody SysUserSaveDTO saveDTO) {
-        this.service.update(saveDTO);
         return saveDTO;
     }
 
@@ -94,7 +123,6 @@ public class UserController {
     @PostMapping("/batchEdit")
     @Operation(summary = "批量编辑")
     public SysUserSaveDTO editByNotNull(@RequestBody SysUserSaveDTO saveDTO) {
-        this.service.updateNotNll(saveDTO);
         return saveDTO;
     }
 
@@ -106,7 +134,6 @@ public class UserController {
     @PostMapping("/delete")
     @Operation(summary = "删除")
     public void deleteById(String id) {
-        this.service.deleteById(id);
     }
 
     /**
@@ -118,7 +145,6 @@ public class UserController {
     @PostMapping("/batchDelete")
     @Operation(summary = "批量删除")
     public Integer deleteByIds(List<String> ids) {
-        this.service.deleteByIds(ids);
         return ids.size();
     }
 }

@@ -8,22 +8,11 @@ spring:
     username: demo
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jooq:
-    sql-dialect: mysql
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    open-in-view: true
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MariaDBDialect
 logging:
   level:
-    com.zaxxer: WARN
-    org.jooq.tools.LoggerListener: DEBUG
-    org.jooq: WARN
+    org.mybatis.spring.mapper: debug
+    root: info
+    com.example.demo: debug
 
 # springdoc-openapi项目配置
 springdoc:
@@ -36,9 +25,14 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match: '/**'
-      packages-to-scan: com.example.demo.controller
+      packages-to-scan: com.example.demo.system.controller
 # knife4j的增强配置，不需要增强可以不配
 knife4j:
   enable: true
   setting:
     language: zh_cn
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.demo.system.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
