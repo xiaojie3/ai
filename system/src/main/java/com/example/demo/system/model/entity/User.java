@@ -1,7 +1,10 @@
 package com.example.demo.system.model.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.demo.system.model.enums.Gender;
 import com.example.demo.system.model.enums.UserStatus;
 import lombok.Data;
 
@@ -16,6 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("`sys_user`")
 public class User {
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     // 账号
@@ -31,13 +35,13 @@ public class User {
     private String email;
 
     // 性别码
-    private String genderCode;
+    private Gender gender;
 
     // 手机号码
     private String phone;
 
     // 状态码
-    private UserStatus userStatusCode;
+    private UserStatus status;
 
     private LocalDateTime createTime;
 

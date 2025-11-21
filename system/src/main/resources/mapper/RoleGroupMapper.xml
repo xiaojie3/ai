@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.system.mapper.RoleGroupMapper">
+    <select id="selectTopLevelGroups" resultType="com.example.demo.system.model.entity.RoleGroup">
+        SELECT id, name, code, parent_id
+        FROM sys_role_group
+        WHERE parent_id = 0
+           OR parent_id IS NULL
+    </select>
+</mapper>

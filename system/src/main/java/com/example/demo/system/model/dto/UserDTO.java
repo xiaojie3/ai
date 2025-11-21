@@ -1,9 +1,9 @@
 package com.example.demo.system.model.dto;
 
+import com.example.demo.system.model.enums.Gender;
 import com.example.demo.system.model.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -21,20 +21,13 @@ public class UserDTO {
     private String email;
 
     // 性别码
-    private String genderCode;
-
-    // 性别码
-    private String genderName;
+    private Gender gender;
 
     // 手机号码
     private String phone;
 
     // 状态码
-    private UserStatus userStatusCode;
-
-    public String userStatusDesc() {
-        return userStatusCode.getDesc();
-    }
+    private UserStatus status;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

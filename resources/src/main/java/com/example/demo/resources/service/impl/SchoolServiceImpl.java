@@ -1,82 +1,19 @@
 package com.example.demo.resources.service.impl;
 
-import com.example.demo.common.context.UserContextHolder;
-import com.example.demo.common.model.PageResult;
-import com.example.demo.common.util.MyUtils;
-import com.example.demo.resources.model.dto.SchoolDTO;
-import com.example.demo.resources.model.dto.SchoolQueryDTO;
-import com.example.demo.resources.model.dto.SchoolSaveDTO;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.demo.resources.mapper.SchoolMapper;
 import com.example.demo.resources.model.entity.School;
-import com.example.demo.resources.repository.SchoolRepository;
 import com.example.demo.resources.service.SchoolService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDateTime;
-import java.util.List;
+/**
+ * 学校表(ResSchool)表服务实现类
+ *
+ * @author robot
+ * @since 2025-11-21 14:05:51
+ */
+@Service("resSchoolService")
+public class SchoolServiceImpl extends ServiceImpl<SchoolMapper, School> implements SchoolService {
 
-@Service
-@RequiredArgsConstructor
-@Transactional
-public class SchoolServiceImpl implements SchoolService {
-    private final SchoolRepository repository;
-
-    @Override
-    public PageResult<SchoolDTO> queryByPage(@RequestBody SchoolQueryDTO queryDTO) {
-        return repository.queryByPage(queryDTO);
-    }
-
-    @Override
-    public List<SchoolDTO> list() {
-        return repository.list();
-    }
-
-    @Override
-    public List<SchoolDTO> list(SchoolQueryDTO queryDTO) {
-        return repository.list();
-    }
-
-    @Override
-    public SchoolDTO FindById(String id) {
-        return repository.FindById(id);
-    }
-
-    @Override
-    public void save(SchoolSaveDTO saveDTO) {
-        School entity = MyUtils.copyObject(saveDTO, School.class);
-        entity.setId(MyUtils.getUUID());
-        entity.setCreateBy(UserContextHolder.getUserId());
-        entity.setCreateTime(LocalDateTime.now());
-        repository.save(entity);
-    }
-
-    @Override
-    public void update(SchoolSaveDTO saveDTO) {
-        School entity = MyUtils.copyObject(saveDTO, School.class);
-        entity.setUpdateBy(UserContextHolder.getUserId());
-        entity.setUpdateTime(LocalDateTime.now());
-        repository.save(entity);
-    }
-
-    @Override
-    public void updateNotNll(SchoolSaveDTO saveDTO) {
-        School entity = repository.FindByIdEntity(saveDTO.getId());
-        MyUtils.copyObject(saveDTO, entity, false);
-        entity.setUpdateBy(UserContextHolder.getUserId());
-        entity.setUpdateTime(LocalDateTime.now());
-        repository.save(entity);
-    }
-
-    @Override
-    public void deleteById(String id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public void deleteByIds(List<String> ids) {
-        repository.deleteByIds(ids);
-    }
 }
 

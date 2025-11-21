@@ -1,9 +1,10 @@
 package com.example.demo.auth.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.demo.auth.model.entity.User;
 
-public interface UserService {
-    User findByAccount(String account);
+import java.util.List;
 
-    User findById(String id);
+public interface UserService extends IService<User> {
+    List<String> getRoleCodeListByUserId(String userId);
 }

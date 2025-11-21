@@ -1,15 +1,20 @@
 package com.example.demo.resources.controller;
 
-import com.example.demo.common.model.ApiResult;
-import com.example.demo.common.model.PageResult;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.resources.model.dto.SchoolDTO;
 import com.example.demo.resources.model.dto.SchoolQueryDTO;
 import com.example.demo.resources.model.dto.SchoolSaveDTO;
+import com.example.demo.resources.model.entity.School;
 import com.example.demo.resources.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 学校表(School)表控制层
+ *
+ * @author robot
+ * @since 2025-11-21 14:05:50
+ */
 @RestController
-@RequestMapping("/resource/school")
+@RequestMapping("resources/school")
 @RequiredArgsConstructor
-@Tag(name = "学校")
 public class SchoolController {
-
+    
     private final SchoolService service;
 
     /**
@@ -33,8 +43,26 @@ public class SchoolController {
      */
     @PostMapping("/query")
     @Operation(summary = "分页查询")
-    public ResponseEntity<ApiResult<PageResult<SchoolDTO>>> queryByPage(@RequestBody SchoolQueryDTO queryDTO) {
-        return ResponseEntity.ok(ApiResult.success(this.service.queryByPage(queryDTO)));
+    public IPage<SchoolDTO> queryByPage(@RequestBody SchoolQueryDTO queryDTO) {
+        // 创建分页参数，并指定排序
+        Page<School> page = new Page<>(1, 20); // 查第1页，每页20条
+        page.addOrder(OrderItem.desc("create_time")); // 按创建时间倒序
+
+
+        LambdaQueryWrapper<School> wrappers = Wrappers.lambdaQuery();
+
+        if(StringUtils.isNotBlank(queryDTO.getId())) {
+            wrappers.eq(School::getId, queryDTO.getId());
+        }
+        // 执行分页查询
+        Page<School> SchoolPage = service.page(page, wrappers);
+
+        return SchoolPage.convert(School -> {
+            SchoolDTO dto = new SchoolDTO();
+            BeanUtils.copyProperties(School, dto); // 使用 Spring 的工具类
+            // 或者用 MapStruct 等更专业的工具
+            return dto;
+        });
     }
 
     /**
@@ -43,10 +71,10 @@ public class SchoolController {
      * @param queryDTO 筛选条件
      * @return 查询结果
      */
-    @PostMapping("list")
+    @PostMapping("/list")
     @Operation(summary = "列表查询")
-    public ResponseEntity<ApiResult<List<SchoolDTO>>> queryByList(@RequestBody SchoolQueryDTO queryDTO) {
-        return ResponseEntity.ok(ApiResult.success(this.service.list(queryDTO)));
+    public List<SchoolDTO> queryByList(SchoolQueryDTO queryDTO) {
+        return null;
     }
 
     /**
@@ -57,8 +85,8 @@ public class SchoolController {
      */
     @PostMapping("/find")
     @Operation(summary = "ID查询")
-    public ResponseEntity<ApiResult<SchoolDTO>> queryById(String id) {
-        return ResponseEntity.ok(ApiResult.success(this.service.FindById(id)));
+    public SchoolDTO queryById(String id) {
+        return null;
     }
 
     /**
@@ -67,11 +95,10 @@ public class SchoolController {
      * @param saveDTO 实体
      * @return 新增结果
      */
-    @PostMapping("/add")
+    @PostMapping
     @Operation(summary = "新增")
-    public ResponseEntity<ApiResult<SchoolSaveDTO>> add(@RequestBody SchoolSaveDTO saveDTO) {
-        this.service.save(saveDTO);
-        return ResponseEntity.ok(ApiResult.success(saveDTO));
+    public SchoolSaveDTO add(@RequestBody SchoolSaveDTO saveDTO) {
+        return saveDTO;
     }
 
     /**
@@ -82,9 +109,8 @@ public class SchoolController {
      */
     @PostMapping("/edit")
     @Operation(summary = "编辑")
-    public ResponseEntity<ApiResult<SchoolSaveDTO>> edit(@RequestBody SchoolSaveDTO saveDTO) {
-        this.service.update(saveDTO);
-        return ResponseEntity.ok(ApiResult.success(saveDTO));
+    public SchoolSaveDTO edit(@RequestBody SchoolSaveDTO saveDTO) {
+        return saveDTO;
     }
 
     /**
@@ -94,23 +120,19 @@ public class SchoolController {
      * @return 编辑结果
      */
     @PostMapping("/batchEdit")
-    @Operation(summary = "编辑非空参数")
-    public ResponseEntity<ApiResult<SchoolSaveDTO>> batchEdit(@RequestBody SchoolSaveDTO saveDTO) {
-        this.service.updateNotNll(saveDTO);
-        return ResponseEntity.ok(ApiResult.success(saveDTO));
+    @Operation(summary = "批量编辑")
+    public SchoolSaveDTO editByNotNull(@RequestBody SchoolSaveDTO saveDTO) {
+        return saveDTO;
     }
 
     /**
      * 删除数据
      *
      * @param id 主键
-     * @return 删除是否成功
      */
     @PostMapping("/delete")
     @Operation(summary = "删除")
-    public ResponseEntity<ApiResult<Void>> deleteById(String id) {
-        this.service.deleteById(id);
-        return ResponseEntity.ok(ApiResult.success(null));
+    public void deleteById(String id) {
     }
 
     /**
@@ -121,10 +143,8 @@ public class SchoolController {
      */
     @PostMapping("/batchDelete")
     @Operation(summary = "批量删除")
-    public ResponseEntity<ApiResult<Integer>> deleteByIds(@RequestBody List<String> ids) {
-        this.service.deleteByIds(ids);
-        return ResponseEntity.ok(ApiResult.success(ids.size()));
+    public Integer deleteByIds(List<String> ids) {
+        return ids.size();
     }
 }
-
 

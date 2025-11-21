@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.resources.mapper.ResSchoolDao">
+
+    <resultMap type="com.example.demo.resources.entity.ResSchool" id="ResSchoolMap">
+        <result property="id" column="id" jdbcType=""/>
+        <result property="schoolCode" column="school_code" jdbcType=""/>
+        <result property="schoolName" column="school_name" jdbcType=""/>
+        <result property="schoolAbbr" column="school_abbr" jdbcType=""/>
+        <result property="englishName" column="english_name" jdbcType=""/>
+        <result property="englishAbbr" column="english_abbr" jdbcType=""/>
+        <result property="keySchool" column="key_school" jdbcType=""/>
+        <result property="orgStructure" column="org_structure" jdbcType=""/>
+        <result property="project211" column="project_211" jdbcType=""/>
+        <result property="province" column="province" jdbcType=""/>
+        <result property="city" column="city" jdbcType=""/>
+        <result property="onlineDept" column="online_dept" jdbcType=""/>
+        <result property="anniversaryDate" column="anniversary_date" jdbcType=""/>
+        <result property="competentDept" column="competent_dept" jdbcType=""/>
+        <result property="graduateSchool" column="graduate_school" jdbcType=""/>
+        <result property="schoolType" column="school_type" jdbcType=""/>
+        <result property="schoolNature" column="school_nature" jdbcType=""/>
+        <result property="adultEduDept" column="adult_edu_dept" jdbcType=""/>
+        <result property="partySecretary" column="party_secretary" jdbcType=""/>
+        <result property="disciplineCount" column="discipline_count" jdbcType=""/>
+        <result property="legalRepresentative" column="legal_representative" jdbcType=""/>
+        <result property="legalCertNo" column="legal_cert_no" jdbcType=""/>
+        <result property="sponsor" column="sponsor" jdbcType=""/>
+        <result property="principal" column="principal" jdbcType=""/>
+        <result property="establishDate" column="establish_date" jdbcType=""/>
+        <result property="homepageUrl" column="homepage_url" jdbcType=""/>
+        <result property="fax" column="fax" jdbcType=""/>
+        <result property="postalCode" column="postal_code" jdbcType=""/>
+        <result property="contactPhone" column="contact_phone" jdbcType=""/>
+        <result property="email" column="email" jdbcType=""/>
+        <result property="address" column="address" jdbcType=""/>
+        <result property="intro" column="intro" jdbcType=""/>
+        <result property="createBy" column="create_by" jdbcType=""/>
+        <result property="createTime" column="create_time" jdbcType=""/>
+        <result property="updateBy" column="update_by" jdbcType=""/>
+        <result property="updateTime" column="update_time" jdbcType=""/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into demo.res_school(school_code, school_name, school_abbr, english_name, english_abbr, key_school,
+        org_structure, project_211, province, city, online_dept, anniversary_date, competent_dept, graduate_school,
+        school_type, school_nature, adult_edu_dept, party_secretary, discipline_count, legal_representative,
+        legal_cert_no, sponsor, principal, establish_date, homepage_url, fax, postal_code, contact_phone, email,
+        address, intro, create_by, create_time, update_by, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.schoolCode}, #{entity.schoolName}, #{entity.schoolAbbr}, #{entity.englishName},
+            #{entity.englishAbbr}, #{entity.keySchool}, #{entity.orgStructure}, #{entity.project211},
+            #{entity.province}, #{entity.city}, #{entity.onlineDept}, #{entity.anniversaryDate},
+            #{entity.competentDept}, #{entity.graduateSchool}, #{entity.schoolType}, #{entity.schoolNature},
+            #{entity.adultEduDept}, #{entity.partySecretary}, #{entity.disciplineCount}, #{entity.legalRepresentative},
+            #{entity.legalCertNo}, #{entity.sponsor}, #{entity.principal}, #{entity.establishDate},
+            #{entity.homepageUrl}, #{entity.fax}, #{entity.postalCode}, #{entity.contactPhone}, #{entity.email},
+            #{entity.address}, #{entity.intro}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy},
+            #{entity.updateTime})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into demo.res_school(school_code, school_name, school_abbr, english_name, english_abbr, key_school,
+        org_structure, project_211, province, city, online_dept, anniversary_date, competent_dept, graduate_school,
+        school_type, school_nature, adult_edu_dept, party_secretary, discipline_count, legal_representative,
+        legal_cert_no, sponsor, principal, establish_date, homepage_url, fax, postal_code, contact_phone, email,
+        address, intro, create_by, create_time, update_by, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.schoolCode}, #{entity.schoolName}, #{entity.schoolAbbr}, #{entity.englishName},
+            #{entity.englishAbbr}, #{entity.keySchool}, #{entity.orgStructure}, #{entity.project211},
+            #{entity.province}, #{entity.city}, #{entity.onlineDept}, #{entity.anniversaryDate},
+            #{entity.competentDept}, #{entity.graduateSchool}, #{entity.schoolType}, #{entity.schoolNature},
+            #{entity.adultEduDept}, #{entity.partySecretary}, #{entity.disciplineCount}, #{entity.legalRepresentative},
+            #{entity.legalCertNo}, #{entity.sponsor}, #{entity.principal}, #{entity.establishDate},
+            #{entity.homepageUrl}, #{entity.fax}, #{entity.postalCode}, #{entity.contactPhone}, #{entity.email},
+            #{entity.address}, #{entity.intro}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy},
+            #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        school_code = values(school_code) , school_name = values(school_name) , school_abbr = values(school_abbr) ,
+        english_name = values(english_name) , english_abbr = values(english_abbr) , key_school = values(key_school) ,
+        org_structure = values(org_structure) , project_211 = values(project_211) , province = values(province) , city =
+        values(city) , online_dept = values(online_dept) , anniversary_date = values(anniversary_date) , competent_dept
+        = values(competent_dept) , graduate_school = values(graduate_school) , school_type = values(school_type) ,
+        school_nature = values(school_nature) , adult_edu_dept = values(adult_edu_dept) , party_secretary =
+        values(party_secretary) , discipline_count = values(discipline_count) , legal_representative =
+        values(legal_representative) , legal_cert_no = values(legal_cert_no) , sponsor = values(sponsor) , principal =
+        values(principal) , establish_date = values(establish_date) , homepage_url = values(homepage_url) , fax =
+        values(fax) , postal_code = values(postal_code) , contact_phone = values(contact_phone) , email = values(email)
+        , address = values(address) , intro = values(intro) , create_by = values(create_by) , create_time =
+        values(create_time) , update_by = values(update_by) , update_time = values(update_time)
+    </insert>
+
+</mapper>
+

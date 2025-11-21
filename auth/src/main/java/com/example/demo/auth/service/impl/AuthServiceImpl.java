@@ -1,11 +1,12 @@
 package com.example.demo.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.demo.auth.model.dto.LoginResponse;
 import com.example.demo.auth.model.dto.UserInfoDTO;
 import com.example.demo.auth.model.entity.RefreshToken;
 import com.example.demo.auth.model.entity.User;
-import com.example.demo.auth.repository.RefreshTokenRepository;
 import com.example.demo.auth.service.AuthService;
+import com.example.demo.auth.service.RefreshTokenService;
 import com.example.demo.auth.service.RoleService;
 import com.example.demo.auth.service.UserService;
 import com.example.demo.common.util.JwtTokenUtil;
@@ -30,14 +31,13 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
     private final MessageSource messageSource;
-    private final RoleService roleService;
 
     @Override
     @Transactional
     public LoginResponse login(String account, String password) {
-        User user = userService.findByAccount(account);
+        User user = userService.lambdaQuery().eq(User::getAccount, account).getEntity();
 
         if (user == null) {
             throw new UsernameNotFoundException(messageSource.getMessage("login.account.not.exists", null, LocaleContextHolder.getLocale()));
@@ -59,11 +59,12 @@ public class AuthServiceImpl implements AuthService {
 
         // 5. 保存 Refresh Token 到数据库
         // 可以先删除该用户之前所有的 Refresh Token，以实现单点登录
-        refreshTokenRepository.deleteByAccount(user.getId());
+        refreshTokenService.remove(Wrappers.<RefreshToken>lambdaQuery()
+                .eq(RefreshToken::getUserId, user.getId()));
 
         RefreshToken authRefreshToken = new RefreshToken();
         authRefreshToken.setId(MyUtils.getUUID());
-        authRefreshToken.setAccount(user.getId());
+        authRefreshToken.setUserId(user.getId());
         authRefreshToken.setRefreshToken(refreshToken);
         // 计算过期时间点 (Instant)
         Instant expirationInstant = Instant.now().plusMillis(jwtTokenUtil.getRefreshTokenExpiration());
@@ -71,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
         LocalDateTime expiresLocalDateTime = expirationInstant.atZone(ZoneId.systemDefault()).toLocalDateTime();
         authRefreshToken.setExpiresTime(expiresLocalDateTime);
         authRefreshToken.setCreateTime(LocalDateTime.now());
-        refreshTokenRepository.save(authRefreshToken);
+        refreshTokenService.save(authRefreshToken);
 
         // 6. 构建并返回 LoginResponse DTO
         return new LoginResponse(accessToken, refreshToken, jwtTokenUtil.getAccessTokenExpiration());
@@ -81,18 +82,21 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public LoginResponse refreshToken(String refreshToken) {
         // 1. 从数据库中查找并验证 Refresh Token
-        RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException(messageSource.getMessage("refresh-token.invalid", null, LocaleContextHolder.getLocale())));
+        RefreshToken storedToken = refreshTokenService.getOne(Wrappers.<RefreshToken>lambdaQuery()
+                        .eq(RefreshToken::getRefreshToken, refreshToken));
+        if (storedToken == null) {
+            throw new RuntimeException(messageSource.getMessage("refresh-token.invalid", null, LocaleContextHolder.getLocale()));
+        }
 
-        // --- 重点修改部分 ---
         // 2. 检查 Token 是否过期 (使用 LocalDateTime.now() 进行比较)
         if (storedToken.getExpiresTime().isBefore(LocalDateTime.now())) {
-            refreshTokenRepository.delete(storedToken);
+            refreshTokenService.remove(Wrappers.<RefreshToken>lambdaQuery()
+                    .eq(RefreshToken::getRefreshToken, storedToken));
             throw new RuntimeException("refresh-token.expired");
         }
 
         // 3. 如果有效，加载用户信息并生成新的 Access Token
-        User user = userService.findById(jwtTokenUtil.getUserIdFromToken(refreshToken));
+        User user = userService.getById(jwtTokenUtil.getUserIdFromToken(refreshToken));
         String newAccessToken = jwtTokenUtil.generateAccessToken(user.getId());
 
         return new LoginResponse(newAccessToken, refreshToken, jwtTokenUtil.getAccessTokenExpiration());
@@ -102,17 +106,18 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void logout(String token) {
         String userId = jwtTokenUtil.getUserIdFromToken(token);
-        refreshTokenRepository.deleteByAccount(userId);
+        refreshTokenService.remove(Wrappers.<RefreshToken>lambdaQuery()
+                .eq(RefreshToken::getUserId, userId));
     }
 
     @Override
     public UserInfoDTO getUserInfo(String token) {
         String userId = jwtTokenUtil.getUserIdFromToken(token);
-        User user = userService.findById(userId);
+        User user = userService.getById(userId);
         UserInfoDTO infoDTO = new UserInfoDTO();
         infoDTO.setId(user.getId());
         infoDTO.setName(user.getAccount());
-        infoDTO.setRoles(roleService.getRoleCodeListByUserId(userId));
+        infoDTO.setRoles(userService.getRoleCodeListByUserId(userId));
         return infoDTO;
     }
 }

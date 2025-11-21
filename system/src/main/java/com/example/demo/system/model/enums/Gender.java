@@ -10,9 +10,11 @@ import java.util.Map;
 
 @Getter
 @AllArgsConstructor
-public enum UserStatus implements IEnum<String> {
-    ENABLED("1", "启用"),
-    DISABLED("0", "禁用");
+public enum Gender implements IEnum<String> {
+    UNKNOWN("0", "未知"),
+    MAN("1", "男"),
+    WOMAN("2", "女");
+
     private final String value;
     private final String desc;
 

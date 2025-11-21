@@ -1,29 +1,15 @@
 package com.example.demo.resources.service;
 
-import com.example.demo.common.model.PageResult;
-import com.example.demo.resources.model.dto.SchoolDTO;
-import com.example.demo.resources.model.dto.SchoolQueryDTO;
-import com.example.demo.resources.model.dto.SchoolSaveDTO;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.demo.resources.model.entity.School;
 
-import java.util.List;
+/**
+ * 学校表(ResSchool)表服务接口
+ *
+ * @author robot
+ * @since 2025-11-21 14:05:50
+ */
+public interface SchoolService extends IService<School> {
 
-public interface SchoolService {
-
-    PageResult<SchoolDTO> queryByPage(SchoolQueryDTO queryDTO);
-
-    List<SchoolDTO> list();
-
-    List<SchoolDTO> list(SchoolQueryDTO queryDTO);
-
-    SchoolDTO FindById(String id);
-
-    void save(SchoolSaveDTO saveDTO);
-
-    void update(SchoolSaveDTO saveDTO);
-
-    void updateNotNll(SchoolSaveDTO saveDTO);
-
-    void deleteById(String id);
-
-    void deleteByIds(List<String> ids);
 }
+

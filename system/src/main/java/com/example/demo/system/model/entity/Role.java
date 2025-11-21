@@ -1,5 +1,7 @@
 package com.example.demo.system.model.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -14,12 +16,15 @@ import java.time.LocalDateTime;
 @Data
 @TableName("`sys_role`")
 public class Role {
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
-    private String roleCode;
+    private String code;
 
     // 角色名称
-    private String roleName;
+    private String name;
+
+    private String groupId;
 
     // 角色描述
     private String description;
