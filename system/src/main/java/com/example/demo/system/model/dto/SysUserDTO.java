@@ -21,6 +21,9 @@ public class SysUserDTO {
     // 性别码
     private String genderCode;
 
+    // 性别码
+    private String genderName;
+
     // 手机号码
     private String phone;
 

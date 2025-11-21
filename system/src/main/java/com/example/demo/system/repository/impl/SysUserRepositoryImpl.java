@@ -66,7 +66,9 @@ public class SysUserRepositoryImpl extends BaseJooqRepository implements SysUser
 
     @Override
     protected SelectJoinStep<?> createFrom(SelectSelectStep<?> sqlSelect) {
-        return dsl.select().from(Tables.SYS_USER);
+        return sqlSelect.from(Tables.SYS_USER)
+                .leftJoin(Tables.SYS_USER_ROLE).on(Tables.SYS_USER_ROLE.USER_ID.eq(Tables.SYS_USER.ID))
+                .leftJoin(Tables.SYS_ROLE).on(Tables.SYS_USER_ROLE.ROLE_ID.eq(Tables.SYS_ROLE.ID));
     }
 
     @Override
