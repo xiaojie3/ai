@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SysRoleSaveDTO {
+public class RoleSaveDTO {
     private String id;
 
     private List<String> ids;

@@ -3,7 +3,7 @@ package com.example.demo.system.model.dto;
 import lombok.Data;
 
 @Data
-public class SysUserSaveDTO  {
+public class UserSaveDTO {
     private String id;
 
     // 账号

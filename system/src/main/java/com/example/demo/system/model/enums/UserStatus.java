@@ -13,14 +13,19 @@ import java.util.Map;
 public enum UserStatus implements IEnum<String> {
     ENABLED("1", "启用"),
     DISABLED("0", "禁用");
-    private final String value;
-    private final String desc;
+    private final String code;
+    private final String name;
 
     @JsonValue
     public Map<String, String> toMap() {
         Map<String, String> map = new HashMap<>();
-        map.put("value", this.value);
-        map.put("desc", this.desc);
+        map.put("code", this.code);
+        map.put("name", this.name);
         return map;
+    }
+
+    @Override
+    public String getValue() {
+        return code;
     }
 }

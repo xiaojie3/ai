@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.demo.system.model.dto.SysUserQueryDTO;
-import com.example.demo.system.model.dto.SysUserSaveDTO;
+import com.example.demo.system.model.dto.UserQueryDTO;
+import com.example.demo.system.model.dto.UserSaveDTO;
 import com.example.demo.system.model.dto.UserDTO;
 import com.example.demo.system.model.entity.User;
 import com.example.demo.system.service.UserService;
@@ -38,32 +38,8 @@ public class UserController {
      */
     @PostMapping("/query")
     @Operation(summary = "分页查询")
-    public IPage<UserDTO> queryByPage(@RequestBody SysUserQueryDTO queryDTO) {
-        // 创建分页参数，并指定排序
-        Page<User> page = new Page<>(1, 20); // 查第1页，每页20条
-        page.addOrder(OrderItem.desc("create_time")); // 按创建时间倒序
-
-
-        LambdaQueryWrapper<User> wrappers = Wrappers.lambdaQuery();
-
-        if(StringUtils.isNotBlank(queryDTO.getId())) {
-            wrappers.eq(User::getId, queryDTO.getId());
-        }
-        if(StringUtils.isNotBlank(queryDTO.getAccount())) {
-            wrappers.like(User::getAccount, queryDTO.getAccount());
-        }
-        if(StringUtils.isNotBlank(queryDTO.getUsername())) {
-            wrappers.like(User::getUsername, queryDTO.getUsername());
-        }
-        // 执行分页查询
-        Page<User> userPage = service.page(page, wrappers);
-
-        return userPage.convert(user -> {
-            UserDTO dto = new UserDTO();
-            BeanUtils.copyProperties(user, dto); // 使用 Spring 的工具类
-            // 或者用 MapStruct 等更专业的工具
-            return dto;
-        });
+    public IPage<UserDTO> queryByPage(@RequestBody UserQueryDTO queryDTO) {
+        return service.queryByPage(queryDTO);
     }
 
     /**
@@ -74,7 +50,7 @@ public class UserController {
      */
     @PostMapping("/list")
     @Operation(summary = "列表查询")
-    public List<UserDTO> queryByList(SysUserQueryDTO queryDTO) {
+    public List<UserDTO> queryByList(UserQueryDTO queryDTO) {
         return null;
     }
 
@@ -98,7 +74,7 @@ public class UserController {
      */
     @PostMapping
     @Operation(summary = "新增")
-    public SysUserSaveDTO add(@RequestBody SysUserSaveDTO saveDTO) {
+    public UserSaveDTO add(@RequestBody UserSaveDTO saveDTO) {
         return saveDTO;
     }
 
@@ -110,7 +86,7 @@ public class UserController {
      */
     @PostMapping("/edit")
     @Operation(summary = "编辑")
-    public SysUserSaveDTO edit(@RequestBody SysUserSaveDTO saveDTO) {
+    public UserSaveDTO edit(@RequestBody UserSaveDTO saveDTO) {
         return saveDTO;
     }
 
@@ -122,7 +98,7 @@ public class UserController {
      */
     @PostMapping("/batchEdit")
     @Operation(summary = "批量编辑")
-    public SysUserSaveDTO editByNotNull(@RequestBody SysUserSaveDTO saveDTO) {
+    public UserSaveDTO editByNotNull(@RequestBody UserSaveDTO saveDTO) {
         return saveDTO;
     }
 

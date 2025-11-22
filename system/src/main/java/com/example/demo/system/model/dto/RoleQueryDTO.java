@@ -2,11 +2,16 @@ package com.example.demo.system.model.dto;
 
 import java.time.LocalDateTime;
 
+import com.example.demo.common.model.PageParams;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class SysRoleDTO {
+@Builder
+public class RoleQueryDTO extends PageParams {
     private String id;
 
     // ${column.comment}

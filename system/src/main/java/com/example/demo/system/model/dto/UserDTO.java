@@ -1,11 +1,13 @@
 package com.example.demo.system.model.dto;
 
+import com.example.demo.system.model.entity.Role;
 import com.example.demo.system.model.enums.Gender;
 import com.example.demo.system.model.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UserDTO {
@@ -28,6 +30,8 @@ public class UserDTO {
 
     // 状态码
     private UserStatus status;
+
+    private String roles;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

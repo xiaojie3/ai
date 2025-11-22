@@ -1,30 +1,39 @@
 package com.example.demo.system.model.dto;
 
-import java.time.LocalDateTime;
-
 import com.example.demo.common.model.PageParams;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
-public class SysRoleQueryDTO extends PageParams {
+public class UserQueryDTO extends PageParams {
     private String id;
 
-    // ${column.comment}
-    private String roleCode;
+    // 账号
+    private String account;
 
-    // 角色名称
-    private String roleName;
+    // 名称
+    private String username;
 
-    // 角色描述
-    private String description;
+    // 密码
+    private String password;
 
-    // 是否启用
-    private String enabled;
+    // 邮箱
+    private String email;
+
+    // 性别码
+    private String genderCode;
+
+    // 手机号码
+    private String phone;
+
+    // 状态码
+    private String userStatusCode;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
