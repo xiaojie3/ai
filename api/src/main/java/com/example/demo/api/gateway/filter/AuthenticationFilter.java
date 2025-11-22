@@ -17,6 +17,11 @@ import reactor.core.publisher.Mono;
 @Component
 @Order(-1)
 public class AuthenticationFilter implements GatewayFilter {
+    private final JwtTokenUtil jwtTokenUtil;
+
+    private AuthenticationFilter(JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
 
     private String extractToken(ServerHttpRequest request) {
         return request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
@@ -41,7 +46,6 @@ public class AuthenticationFilter implements GatewayFilter {
             return chain.filter(exchange);
         }
         try {
-            JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             String token = extractToken(request);
             String userId = new JwtTokenUtil().getUserIdFromToken(token);
             // 认证令牌是否过期

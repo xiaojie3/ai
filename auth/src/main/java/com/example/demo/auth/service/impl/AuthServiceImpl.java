@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public LoginResponse login(String account, String password) {
-        User user = userService.lambdaQuery().eq(User::getAccount, account).getEntity();
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getAccount, account));
 
         if (user == null) {
             throw new UsernameNotFoundException(messageSource.getMessage("login.account.not.exists", null, LocaleContextHolder.getLocale()));

@@ -4,13 +4,13 @@ spring:
   application:
     name: api
   datasource:
-    url: jdbc:mysql://192.168.1.165:3306/demo
+    url: jdbc:mysql://localhost:3306/demo
     username: demo
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   data:
     redis:
-      host: 192.168.1.165
+      host: localhost
       port: 6379
       database: 0
       timeout: 3000
