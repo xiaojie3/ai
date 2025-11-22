@@ -1,4 +1,4 @@
-package com.example.demo.file.model;
+package com.example.demo.file.model.enums;
 
 import lombok.Getter;
 

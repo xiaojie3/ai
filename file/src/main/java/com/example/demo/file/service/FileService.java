@@ -1,5 +1,6 @@
 package com.example.demo.file.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.demo.file.model.dto.FileDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;

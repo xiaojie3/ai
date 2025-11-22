@@ -1,12 +1,12 @@
 package com.example.demo.file.service.impl;
 
 import com.example.demo.common.util.MyUtils;
-import com.example.demo.file.model.FileDirectoryEnum;
 import com.example.demo.file.model.dto.FileDTO;
 import com.example.demo.file.model.entity.FileDirectoryRole;
 import com.example.demo.file.model.entity.FileMetadata;
-import com.example.demo.file.repository.FileDirectoryRoleRepository;
-import com.example.demo.file.repository.FileMetadataRepository;
+import com.example.demo.file.model.enums.FileDirectoryEnum;
+import com.example.demo.file.service.FileDirectoryRoleService;
+import com.example.demo.file.service.FileMetadataService;
 import com.example.demo.file.service.FileService;
 import com.example.demo.file.strategy.FileStorageStrategy;
 import com.example.demo.file.util.ImageUtils;
@@ -14,8 +14,6 @@ import com.example.demo.file.util.Md5Util;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,17 +33,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
 
-    private final MessageSource messageSource;
     private final FileStorageStrategy fileStorageStrategy;
-    private final FileMetadataRepository fileMetadataRepository;
-    private final FileDirectoryRoleRepository fileDirectoryRoleRepository;
+    private final FileMetadataService fileMetadataService;
+    private final FileDirectoryRoleService fileDirectoryRoleService;
     private final ImageUtils imageUtils;
 
     @Override
     public FileDTO upload(MultipartFile file, String directoryId, String userId) throws IOException {
         // 1. 计算文件MD5（防重复上传）
         String md5 = Md5Util.calculateMd5(file.getInputStream());
-        List<FileMetadata> existFileList = fileMetadataRepository.findByMd5(md5);
+        List<FileMetadata> existFileList = fileMetadataService.findByMd5(md5);
         if (!existFileList.isEmpty()) {
             return convertToDTO(existFileList.getFirst());
         }
@@ -69,7 +66,7 @@ public class FileServiceImpl implements FileService {
         fileMetadata.setDirectoryId(directoryId);
         fileMetadata.setMd5(md5);
         fileMetadata.setCreateTime(LocalDateTime.now());
-        fileMetadataRepository.save(fileMetadata);
+        fileMetadataService.save(fileMetadata);
 
         return convertToDTO(fileMetadata);
     }
@@ -77,10 +74,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public boolean checkDownloadPermission(String fileId, String userId, List<String> userRoleCodeList) {
         // 1. 查询文件元数据
-        FileMetadata fileMetadata = fileMetadataRepository.findById(fileId).orElseThrow(() -> {
-            String msg = messageSource.getMessage("file.notExists", null, LocaleContextHolder.getLocale());
-            return new RuntimeException(msg);
-        });
+        FileMetadata fileMetadata = fileMetadataService.findById(fileId);
 
         // 2. 条件1：上传者专属下载
         if (userId.equals(fileMetadata.getUploaderId())) {
@@ -89,7 +83,7 @@ public class FileServiceImpl implements FileService {
 
         // 3. 条件2：目录角色授权（用户角色包含目录授权角色）
         String directoryId = fileMetadata.getDirectoryId();
-        List<FileDirectoryRole> authList = fileDirectoryRoleRepository.findByDirectoryId(directoryId);
+        List<FileDirectoryRole> authList = fileDirectoryRoleService.lambdaQuery().eq(FileDirectoryRole::getDirectoryId, directoryId).list();
 
         // 检查用户角色是否与授权角色匹配
         Set<String> authRoles = authList.stream().map(FileDirectoryRole::getRoleId).collect(Collectors.toSet());
@@ -98,10 +92,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void delete(String fileId, String userId) throws IOException {
-        FileMetadata fileMetadata = fileMetadataRepository.findById(fileId).orElseThrow(() -> {
-            String msg = messageSource.getMessage("file.notExists", null, LocaleContextHolder.getLocale());
-            return new RuntimeException(msg);
-        });
+        FileMetadata fileMetadata = fileMetadataService.findById(fileId);
         if(userId.equals(fileMetadata.getUploaderId())) {
             fileStorageStrategy.delete(fileMetadata.getFilePath());
         }
@@ -112,10 +103,7 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public void download(String fileId, String userId, HttpServletResponse response) throws IOException {
-        FileMetadata fileMetadata = fileMetadataRepository.findById(fileId).orElseThrow(() -> {
-            String msg = messageSource.getMessage("file.notExists", null, LocaleContextHolder.getLocale());
-            return new RuntimeException(msg);
-        });
+        FileMetadata fileMetadata = fileMetadataService.findById(fileId);
         if(userId.equals(fileMetadata.getUploaderId())) {
             // 设置响应头
             response.setContentType(fileMetadata.getFileType());
@@ -146,7 +134,7 @@ public class FileServiceImpl implements FileService {
 
                 // 3.1 计算MD5（防重复）
                 String md5 = Md5Util.calculateMd5(new ByteArrayInputStream(imageBytes));
-                List<FileMetadata> existFileList = fileMetadataRepository.findByMd5(md5);
+                List<FileMetadata> existFileList = fileMetadataService.findByMd5(md5);
                 if (!existFileList.isEmpty()) {
                     return convertToDTO(existFileList.getFirst());
                 }
@@ -173,7 +161,7 @@ public class FileServiceImpl implements FileService {
                 fileMetadata.setDirectoryId(FileDirectoryEnum.AVATAR.getDirName());
                 fileMetadata.setMd5(md5);
                 fileMetadata.setCreateTime(LocalDateTime.now());
-                fileMetadataRepository.save(fileMetadata);
+                fileMetadataService.save(fileMetadata);
 
                 resultMap.put(size, convertToDTO(fileMetadata));
             }
