@@ -1,13 +1,11 @@
 package com.example.demo.system.model.dto;
 
-import com.example.demo.system.model.entity.Role;
 import com.example.demo.system.model.enums.Gender;
 import com.example.demo.system.model.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class UserDTO {

@@ -7,7 +7,6 @@ import com.example.demo.auth.model.entity.RefreshToken;
 import com.example.demo.auth.model.entity.User;
 import com.example.demo.auth.service.AuthService;
 import com.example.demo.auth.service.RefreshTokenService;
-import com.example.demo.auth.service.RoleService;
 import com.example.demo.auth.service.UserService;
 import com.example.demo.common.util.JwtTokenUtil;
 import com.example.demo.common.util.MyUtils;
